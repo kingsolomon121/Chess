@@ -8,10 +8,31 @@
         End If
         col += 1
     End Sub
-
+    Dim clicked As Boolean = False
+    Dim player As Integer = 1
     Public Sub CheckSpace(num As Integer)
-        If Not (board(num).BackgroundImage Is Nothing) Then
-            MsgBox(num)
+
+        If Not (clicked) Then
+            If Not (board(num).BackgroundImage Is Nothing) Then
+                If (player = 1 And board(num).ForeColor = Color.White) Then
+                    clicked = True
+                    'player = 2
+                    'Label1.Text = "Player 2's Turn"
+                ElseIf (player = 2 And board(num).ForeColor = Color.Black) Then
+                    'player = 1
+                    clicked = True
+                    'Label1.Text = "Player 1's Turn"
+                End If
+            End If
+        Else
+            clicked = False
+            MovePiece(num)
+        End If
+    End Sub
+
+    Public Sub MovePiece(num As Integer)
+        If (board(num).BackgroundImage Is Nothing) Then
+            MsgBox("Move Made")
         End If
     End Sub
 
