@@ -10,18 +10,13 @@
     End Sub
     Dim clicked As Boolean = False
     Dim player As Integer = 1
+    Dim piece As Integer
     Public Sub CheckSpace(num As Integer)
-
         If Not (clicked) Then
             If Not (board(num).BackgroundImage Is Nothing) Then
-                If (player = 1 And board(num).ForeColor = Color.White) Then
+                If (player = 1 And board(num).ForeColor = Color.White) Or ((player = 2 And board(num).ForeColor = Color.Black)) Then
                     clicked = True
-                    'player = 2
-                    'Label1.Text = "Player 2's Turn"
-                ElseIf (player = 2 And board(num).ForeColor = Color.Black) Then
-                    'player = 1
-                    clicked = True
-                    'Label1.Text = "Player 1's Turn"
+                    piece = num
                 End If
             End If
         Else
@@ -30,9 +25,971 @@
         End If
     End Sub
 
-    Public Sub MovePiece(num As Integer)
-        If (board(num).BackgroundImage Is Nothing) Then
-            MsgBox("Move Made")
+    Dim wp As Image = My.Resources.white_pawn
+    Dim wr As Image = My.Resources.white_rook
+    Dim wn As Image = My.Resources.white_knight
+    Dim wb As Image = My.Resources.white_bishop
+    Dim wk As Image = My.Resources.white_king
+    Dim wq As Image = My.Resources.white_queen
+
+    Dim bp As Image = My.Resources.black_pawn
+    Dim br As Image = My.Resources.black_rook
+    Dim bn As Image = My.Resources.black_knight
+    Dim bb As Image = My.Resources.black_bishop
+    Dim bk As Image = My.Resources.black_king
+    Dim bq As Image = My.Resources.black_queen
+    Dim moveMade() As Integer
+    Dim num As Integer
+
+    Public Sub Moved()
+        moveMade = {num, piece}
+    End Sub
+
+    Public Sub WinKing()
+        Dim king As Integer
+        For counter As Integer = 1 To 64
+            If (board(counter).BackgroundImage Is wk Or board(counter).BackgroundImage Is bk) Then
+                king += 1
+            End If
+        Next
+        If (king = 2) Then
+            Exit Sub
+        End If
+        If (player = 1) Then
+            MsgBox("Player 2 Wins!!")
+            End
+        Else
+            MsgBox("Player 1 Wins!!")
+            End
+        End If
+    End Sub
+
+    Public Sub PawnQueen()
+        For counter As Integer = 1 To 8
+            If (board(counter).BackgroundImage Is wp) Then
+                board(counter).BackgroundImage = wq
+            End If
+        Next
+        For counter As Integer = 57 To 64
+            If (board(counter).BackgroundImage Is bp) Then
+                board(counter).BackgroundImage = bq
+            End If
+        Next
+    End Sub
+
+    Public Sub MovePiece(numb As Integer)
+        num = numb
+        If (player = 1) Then
+            If (board(num).BackgroundImage Is Nothing Or board(num).ForeColor = Color.Black) Then
+                If (board(piece).BackgroundImage Is wp) Then
+                    If (piece - 8 = num And board(num).BackgroundImage Is Nothing) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                        PawnQueen()
+                    ElseIf (piece - 9 = num Or piece - 7 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                        PawnQueen()
+                    End If
+
+                ElseIf (board(piece).BackgroundImage Is wr) Then
+                    For counter As Integer = 1 To 7
+                        If (piece - (8 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (8 * counter) > 0 And piece - (8 * counter) < 65) Then
+                            If Not (board(piece - (8 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (8 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (8 * counter) > 0 And piece + (8 * counter) < 65) Then
+                            If Not (board(piece + (8 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece - (1 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (1 * counter) > 0 And piece - (1 * counter) < 65) Then
+                            If Not (board(piece - (1 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (1 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (1 * counter) > 0 And piece + (1 * counter) < 65) Then
+                            If Not (board(piece + (1 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+
+                ElseIf (board(piece).BackgroundImage Is wn) Then
+                    If (piece - 17 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 15 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 17 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 15 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 10 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 10 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 6 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 6 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    End If
+
+                ElseIf (board(piece).BackgroundImage Is wb) Then
+                    For counter As Integer = 1 To 7
+                        If (piece - (7 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (7 * counter) > 0 And piece - (7 * counter) < 65) Then
+                            If Not (board(piece - (7 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (7 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (7 * counter) > 0 And piece + (7 * counter) < 65) Then
+                            If Not (board(piece + (7 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece - (9 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (9 * counter) > 0 And piece - (9 * counter) < 65) Then
+                            If Not (board(piece - (9 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (9 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (9 * counter) > 0 And piece + (9 * counter) < 65) Then
+                            If Not (board(piece + (9 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+
+                ElseIf (board(piece).BackgroundImage Is wq) Then
+                    For counter As Integer = 1 To 7
+                        If (piece - (7 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (7 * counter) > 0 And piece - (7 * counter) < 65) Then
+                            If Not (board(piece - (7 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (7 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (7 * counter) > 0 And piece + (7 * counter) < 65) Then
+                            If Not (board(piece + (7 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece - (9 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (9 * counter) > 0 And piece - (9 * counter) < 65) Then
+                            If Not (board(piece - (9 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (9 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (9 * counter) > 0 And piece + (9 * counter) < 65) Then
+                            If Not (board(piece + (9 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece - (8 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (8 * counter) > 0 And piece - (8 * counter) < 65) Then
+                            If Not (board(piece - (8 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (8 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (8 * counter) > 0 And piece + (8 * counter) < 65) Then
+                            If Not (board(piece + (8 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece - (1 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (1 * counter) > 0 And piece - (1 * counter) < 65) Then
+                            If Not (board(piece - (1 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (1 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.White
+                            board(piece).ForeColor = Color.Empty
+                            player = 2
+                            Label1.Text = "Player 2's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (1 * counter) > 0 And piece + (1 * counter) < 65) Then
+                            If Not (board(piece + (1 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+
+                ElseIf (board(piece).BackgroundImage Is wk) Then
+                    If (piece - 1 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 1 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 8 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 8 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 9 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 9 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 7 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 7 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                    End If
+                End If
+            End If
+
+
+
+        Else
+            If (board(num).BackgroundImage Is Nothing Or board(num).ForeColor = Color.White) Then
+                If (board(piece).BackgroundImage Is bp) Then
+                    If (piece + 8 = num And board(num).BackgroundImage Is Nothing) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                        PawnQueen()
+                    ElseIf (piece + 9 = num Or piece + 7 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                        PawnQueen()
+                    End If
+
+                ElseIf (board(piece).BackgroundImage Is br) Then
+                    For counter As Integer = 1 To 7
+                        If (piece - (8 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (8 * counter) > 0 And piece - (8 * counter) < 65) Then
+                            If Not (board(piece - (8 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (8 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (8 * counter) > 0 And piece + (8 * counter) < 65) Then
+                            If Not (board(piece + (8 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece - (1 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (1 * counter) > 0 And piece - (1 * counter) < 65) Then
+                            If Not (board(piece - (1 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (1 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (1 * counter) > 0 And piece + (1 * counter) < 65) Then
+                            If Not (board(piece + (1 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+
+                ElseIf (board(piece).BackgroundImage Is bn) Then
+                    If (piece - 17 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 15 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 17 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 15 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 10 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 10 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 6 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 6 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    End If
+
+                ElseIf (board(piece).BackgroundImage Is bb) Then
+                    For counter As Integer = 1 To 7
+                        If (piece - (7 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (7 * counter) > 0 And piece - (7 * counter) < 65) Then
+                            If Not (board(piece - (7 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (7 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (7 * counter) > 0 And piece + (7 * counter) < 65) Then
+                            If Not (board(piece + (7 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece - (9 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (9 * counter) > 0 And piece - (9 * counter) < 65) Then
+                            If Not (board(piece - (9 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (9 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (9 * counter) > 0 And piece + (9 * counter) < 65) Then
+                            If Not (board(piece + (9 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+
+                ElseIf (board(piece).BackgroundImage Is bq) Then
+                    For counter As Integer = 1 To 7
+                        If (piece - (7 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (7 * counter) > 0 And piece - (7 * counter) < 65) Then
+                            If Not (board(piece - (7 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (7 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (7 * counter) > 0 And piece + (7 * counter) < 65) Then
+                            If Not (board(piece + (7 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece - (9 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (9 * counter) > 0 And piece - (9 * counter) < 65) Then
+                            If Not (board(piece - (9 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (9 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (9 * counter) > 0 And piece + (9 * counter) < 65) Then
+                            If Not (board(piece + (9 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece - (8 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (8 * counter) > 0 And piece - (8 * counter) < 65) Then
+                            If Not (board(piece - (8 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (8 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (8 * counter) > 0 And piece + (8 * counter) < 65) Then
+                            If Not (board(piece + (8 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece - (1 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (1 * counter) > 0 And piece - (1 * counter) < 65) Then
+                            If Not (board(piece - (1 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If (piece + (1 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (1 * counter) > 0 And piece + (1 * counter) < 65) Then
+                            If Not (board(piece + (1 * counter)).BackgroundImage Is Nothing) Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+
+                ElseIf (board(piece).BackgroundImage Is bk) Then
+                    If (piece - 1 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 1 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 8 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 8 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 9 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 9 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece - 7 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    ElseIf (piece + 7 = num) Then
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                    End If
+                End If
+            End If
         End If
     End Sub
 
@@ -57,7 +1014,7 @@
         col = 1
         For i = 9 To 16
             board(i).Location = New Point(64 * (i - 9), 55)
-            board(i).BackgroundImage = My.Resources.black_pawn
+            board(i).BackgroundImage = bp
             board(i).ForeColor = Color.Black
             Colorer(i)
         Next i
@@ -89,7 +1046,7 @@
         col = 0
         For i = 49 To 56
             board(i).Location = New Point(64 * (i - 49), 330)
-            board(i).BackgroundImage = My.Resources.white_pawn
+            board(i).BackgroundImage = wp
             board(i).ForeColor = Color.White
             Colorer(i)
         Next i
@@ -100,14 +1057,14 @@
             Colorer(i)
         Next i
 
-        board(1).BackgroundImage = My.Resources.black_rook
-        board(8).BackgroundImage = My.Resources.black_rook
-        board(2).BackgroundImage = My.Resources.black_knight
-        board(7).BackgroundImage = My.Resources.black_knight
-        board(3).BackgroundImage = My.Resources.black_bishop
-        board(6).BackgroundImage = My.Resources.black_bishop
-        board(4).BackgroundImage = My.Resources.black_king
-        board(5).BackgroundImage = My.Resources.black_queen
+        board(1).BackgroundImage = br
+        board(8).BackgroundImage = br
+        board(2).BackgroundImage = bn
+        board(7).BackgroundImage = bn
+        board(3).BackgroundImage = bb
+        board(6).BackgroundImage = bb
+        board(4).BackgroundImage = bk
+        board(5).BackgroundImage = bq
         board(1).ForeColor = Color.Black
         board(8).ForeColor = Color.Black
         board(2).ForeColor = Color.Black
@@ -117,14 +1074,14 @@
         board(4).ForeColor = Color.Black
         board(5).ForeColor = Color.Black
 
-        board(57).BackgroundImage = My.Resources.white_rook
-        board(64).BackgroundImage = My.Resources.white_rook
-        board(63).BackgroundImage = My.Resources.white_knight
-        board(58).BackgroundImage = My.Resources.white_knight
-        board(59).BackgroundImage = My.Resources.white_bishop
-        board(62).BackgroundImage = My.Resources.white_bishop
-        board(60).BackgroundImage = My.Resources.white_king
-        board(61).BackgroundImage = My.Resources.white_queen
+        board(57).BackgroundImage = wr
+        board(64).BackgroundImage = wr
+        board(63).BackgroundImage = wn
+        board(58).BackgroundImage = wn
+        board(59).BackgroundImage = wb
+        board(62).BackgroundImage = wb
+        board(60).BackgroundImage = wk
+        board(61).BackgroundImage = wq
         board(57).ForeColor = Color.White
         board(58).ForeColor = Color.White
         board(59).ForeColor = Color.White
