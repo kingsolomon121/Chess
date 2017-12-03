@@ -2,11 +2,14 @@
     Dim board(64) As Button
     Dim col As Integer = 0
 
-    Public Sub Colorer(i As Integer)
-        If (col Mod 2 = 0) Then
-            board(i).BackColor = Color.Maroon
-        End If
-        col += 1
+    Public Sub Colorer()
+        For count As Integer = 1 To 64
+            If ((count Mod 16) Mod 2 = 0 Xor count Mod 16 > 7) Then
+                board(count).BackColor = Color.Empty
+            Else
+                board(count).BackColor = Color.Maroon
+            End If
+        Next
     End Sub
     Dim clicked As Boolean = False
     Dim player As Integer = 1
@@ -17,11 +20,13 @@
                 If (player = 1 And board(num).ForeColor = Color.White) Or ((player = 2 And board(num).ForeColor = Color.Black)) Then
                     clicked = True
                     piece = num
+                    Button2.Enabled = True
                 End If
             End If
         Else
             clicked = False
             MovePiece(num)
+            Button2.Enabled = False
         End If
     End Sub
 
@@ -44,6 +49,7 @@
     Public Sub Moved()
         moveMade = {num, piece}
         Button1.Enabled = True
+        Colorer()
     End Sub
 
     Public Sub WinKing()
@@ -1009,54 +1015,41 @@
 
         For i = 1 To 8
             board(i).Location = New Point(64 * (i - 1), 0)
-            Colorer(i)
         Next i
 
-        col = 1
         For i = 9 To 16
             board(i).Location = New Point(64 * (i - 9), 55)
             board(i).BackgroundImage = bp
             board(i).ForeColor = Color.Black
-            Colorer(i)
         Next i
 
-        col = 0
         For i = 17 To 24
             board(i).Location = New Point(64 * (i - 17), 110)
-            Colorer(i)
         Next i
 
-        col = 1
         For i = 25 To 32
             board(i).Location = New Point(64 * (i - 25), 165)
-            Colorer(i)
         Next i
 
-        col = 0
         For i = 33 To 40
             board(i).Location = New Point(64 * (i - 33), 220)
-            Colorer(i)
         Next i
 
-        col = 1
         For i = 41 To 48
             board(i).Location = New Point(64 * (i - 41), 275)
-            Colorer(i)
         Next i
 
-        col = 0
         For i = 49 To 56
             board(i).Location = New Point(64 * (i - 49), 330)
             board(i).BackgroundImage = wp
             board(i).ForeColor = Color.White
-            Colorer(i)
         Next i
 
-        col = 1
         For i = 57 To 64
             board(i).Location = New Point(64 * (i - 57), 385)
-            Colorer(i)
         Next i
+
+        Colorer()
 
         board(1).BackgroundImage = br
         board(8).BackgroundImage = br
@@ -1115,6 +1108,71 @@
             player = 1
             Label1.Text = "Player 1's Turn"
             Button1.Enabled = False
+        End If
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Dim i As Integer
+        If (board(piece).BackgroundImage Is wp) Then
+            If (board(piece - 8).BackgroundImage Is Nothing) Then
+                board(piece - 8).BackColor = Color.Yellow
+            End If
+            If (board(piece - 9).ForeColor = Color.Black) Then
+                board(piece - 9).BackColor = Color.Yellow
+            End If
+            If (board(piece - 7).ForeColor = Color.Black) Then
+                board(piece - 7).BackColor = Color.Yellow
+            End If
+
+        ElseIf (board(piece).BackgroundImage Is bp) Then
+            If (board(piece + 8).BackgroundImage Is Nothing) Then
+                board(piece + 8).BackColor = Color.Yellow
+            End If
+            If (board(piece + 9).ForeColor = Color.White) Then
+                board(piece + 9).BackColor = Color.Yellow
+            End If
+            If (board(piece + 7).ForeColor = Color.White) Then
+                board(piece + 7).BackColor = Color.Yellow
+            End If
+
+        ElseIf (board(piece).BackgroundImage Is wr) Then
+            For i = 1 To 7
+                If (piece - (8 * i) > 0 And (piece - (8 * i) < 65)) Then
+                    If (board(piece - (8 * i)).BackgroundImage Is Nothing) Then
+                        board(piece - (8 * i)).BackColor = Color.Yellow
+
+                    Else
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece + (8 * i) > 0 And (piece + (8 * i) < 65)) Then
+                    If (board(piece + (8 * i)).BackgroundImage Is Nothing) Then
+                        board(piece + (8 * i)).BackColor = Color.Yellow
+                    Else
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece - (1 * i) > 0 And (piece - (1 * i) < 65)) Then
+                    If (board(piece - (1 * i)).BackgroundImage Is Nothing) Then
+                        board(piece - (1 * i)).BackColor = Color.Yellow
+                    Else
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece + (1 * i) > 0 And (piece + (1 * i) < 65)) Then
+                    If (board(piece + (1 * i)).BackgroundImage Is Nothing) Then
+                        board(piece + (1 * i)).BackColor = Color.Yellow
+                    Else
+                        Exit For
+                    End If
+                End If
+            Next i
         End If
     End Sub
 End Class
