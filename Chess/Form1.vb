@@ -43,6 +43,7 @@
 
     Public Sub Moved()
         moveMade = {num, piece}
+        Button1.Enabled = True
     End Sub
 
     Public Sub WinKing()
@@ -1095,5 +1096,25 @@
     Private Sub Button_Click(sender As Object, e As EventArgs)
         CheckSpace(CType(CType(sender,
     System.Windows.Forms.Button).Tag, Integer))
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        If (player = 1) Then
+            board(moveMade(1)).BackgroundImage = board(moveMade(0)).BackgroundImage
+            board(moveMade(0)).BackgroundImage = Nothing
+            board(moveMade(0)).ForeColor = Color.Empty
+            board(moveMade(1)).ForeColor = Color.Black
+            player = 2
+            Label1.Text = "Player 2's Turn"
+            Button1.Enabled = False
+        Else
+            board(moveMade(1)).BackgroundImage = board(moveMade(0)).BackgroundImage
+            board(moveMade(0)).BackgroundImage = Nothing
+            board(moveMade(0)).ForeColor = Color.Empty
+            board(moveMade(1)).ForeColor = Color.White
+            player = 1
+            Label1.Text = "Player 1's Turn"
+            Button1.Enabled = False
+        End If
     End Sub
 End Class
