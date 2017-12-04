@@ -49,6 +49,7 @@
     Dim bq As Image = My.Resources.black_queen
     Dim moveMade() As Integer
     Dim num As Integer
+    Dim pict As Image
 
     Public Sub Moved()
         moveMade = {num, piece}
@@ -93,6 +94,7 @@
             If (board(num).BackgroundImage Is Nothing Or board(num).ForeColor = Color.Black) Then
                 If (board(piece).BackgroundImage Is wp) Then
                     If (piece - 8 = num And board(num).BackgroundImage Is Nothing) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -103,6 +105,7 @@
                         Moved()
                         PawnQueen()
                     ElseIf (piece - 9 = num Or piece - 7 = num) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -117,6 +120,7 @@
                 ElseIf (board(piece).BackgroundImage Is wr) Then
                     For counter As Integer = 1 To 7
                         If (piece - (8 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -134,6 +138,7 @@
                     Next
                     For counter As Integer = 1 To 7
                         If (piece + (8 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -154,6 +159,7 @@
                             Exit For
                         End If
                         If (piece - (1 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -174,6 +180,7 @@
                             Exit For
                         End If
                         If (piece + (1 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -192,6 +199,7 @@
 
                 ElseIf (board(piece).BackgroundImage Is wn) Then
                     If (piece - 17 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 16) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -201,6 +209,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 15 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 16) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -210,6 +219,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 17 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 16) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -219,6 +229,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 15 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 16) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -228,6 +239,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 10 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 8) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -237,6 +249,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 10 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 8) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -246,6 +259,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 6 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 8) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -255,6 +269,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 6 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 8) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -271,6 +286,7 @@
                             Exit For
                         End If
                         If (piece - (7 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -291,6 +307,7 @@
                             Exit For
                         End If
                         If (piece + (7 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -311,6 +328,7 @@
                             Exit For
                         End If
                         If (piece - (9 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -331,6 +349,7 @@
                             Exit For
                         End If
                         If (piece + (9 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -353,6 +372,7 @@
                             Exit For
                         End If
                         If (piece - (7 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -373,6 +393,7 @@
                             Exit For
                         End If
                         If (piece + (7 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -393,6 +414,7 @@
                             Exit For
                         End If
                         If (piece - (9 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -413,6 +435,7 @@
                             Exit For
                         End If
                         If (piece + (9 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -430,6 +453,7 @@
                     Next
                     For counter As Integer = 1 To 7
                         If (piece - (8 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -447,6 +471,7 @@
                     Next
                     For counter As Integer = 1 To 7
                         If (piece + (8 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -467,6 +492,7 @@
                             Exit For
                         End If
                         If (piece - (1 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -487,6 +513,7 @@
                             Exit For
                         End If
                         If (piece + (1 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.White
@@ -505,6 +532,7 @@
 
                 ElseIf (board(piece).BackgroundImage Is wk) Then
                     If (piece - 1 = num) And (Math.Ceiling((piece - 1) / 8) = Math.Ceiling(piece / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -514,6 +542,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 1 = num) And (Math.Ceiling((piece + 1) / 8) = Math.Ceiling(piece / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -523,6 +552,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 8 = num) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -532,6 +562,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 8 = num) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -541,6 +572,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 9 = num) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -550,6 +582,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 9 = num) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -559,6 +592,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 7 = num) And Not (Math.Ceiling((piece - 7) / 8) = Math.Ceiling(piece / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -568,6 +602,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 7 = num) And Not (Math.Ceiling((piece + 7) / 8) = Math.Ceiling(piece / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -586,6 +621,7 @@
             If (board(num).BackgroundImage Is Nothing Or board(num).ForeColor = Color.White) Then
                 If (board(piece).BackgroundImage Is bp) Then
                     If (piece + 8 = num And board(num).BackgroundImage Is Nothing) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -596,6 +632,7 @@
                         Moved()
                         PawnQueen()
                     ElseIf (piece + 9 = num Or piece + 7 = num) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -610,6 +647,7 @@
                 ElseIf (board(piece).BackgroundImage Is br) Then
                     For counter As Integer = 1 To 7
                         If (piece - (8 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -627,6 +665,7 @@
                     Next
                     For counter As Integer = 1 To 7
                         If (piece + (8 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -647,6 +686,7 @@
                             Exit For
                         End If
                         If (piece - (1 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -667,6 +707,7 @@
                             Exit For
                         End If
                         If (piece + (1 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -685,6 +726,7 @@
 
                 ElseIf (board(piece).BackgroundImage Is bn) Then
                     If (piece - 17 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 16) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -694,6 +736,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 15 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 16) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -703,6 +746,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 17 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 16) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -712,6 +756,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 15 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 16) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -721,6 +766,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 10 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 8) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -730,6 +776,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 10 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 8) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -739,6 +786,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 6 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 8) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -748,6 +796,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 6 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 8) / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -764,6 +813,7 @@
                             Exit For
                         End If
                         If (piece - (7 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -784,6 +834,7 @@
                             Exit For
                         End If
                         If (piece + (7 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -804,6 +855,7 @@
                             Exit For
                         End If
                         If (piece - (9 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -824,6 +876,7 @@
                             Exit For
                         End If
                         If (piece + (9 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -843,6 +896,7 @@
                 ElseIf (board(piece).BackgroundImage Is bq) Then
                     For counter As Integer = 1 To 7
                         If (piece - (8 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -860,6 +914,7 @@
                     Next
                     For counter As Integer = 1 To 7
                         If (piece + (8 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -880,6 +935,7 @@
                             Exit For
                         End If
                         If (piece - (1 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -900,6 +956,7 @@
                             Exit For
                         End If
                         If (piece + (1 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -920,6 +977,7 @@
                             Exit For
                         End If
                         If (piece - (7 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -940,6 +998,7 @@
                             Exit For
                         End If
                         If (piece + (7 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -960,6 +1019,7 @@
                             Exit For
                         End If
                         If (piece - (9 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -980,6 +1040,7 @@
                             Exit For
                         End If
                         If (piece + (9 * counter) = num) Then
+                            pict = board(num).BackgroundImage
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
                             board(num).ForeColor = Color.Black
@@ -998,6 +1059,7 @@
 
                 ElseIf (board(piece).BackgroundImage Is bk) Then
                     If (piece - 1 = num) And (Math.Ceiling((piece - 1) / 8) = Math.Ceiling(piece / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -1007,6 +1069,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 1 = num) And (Math.Ceiling((piece + 1) / 8) = Math.Ceiling(piece / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -1016,6 +1079,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 8 = num) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -1025,6 +1089,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 8 = num) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -1034,6 +1099,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 9 = num) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -1043,6 +1109,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 9 = num) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -1052,6 +1119,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece - 7 = num) And Not (Math.Ceiling((piece - 7) / 8) = Math.Ceiling(piece / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -1061,6 +1129,7 @@
                         WinKing()
                         Moved()
                     ElseIf (piece + 7 = num) And Not (Math.Ceiling((piece + 7) / 8) = Math.Ceiling(piece / 8)) Then
+                        pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -1169,16 +1238,24 @@
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         If (player = 1) Then
             board(moveMade(1)).BackgroundImage = board(moveMade(0)).BackgroundImage
-            board(moveMade(0)).BackgroundImage = Nothing
-            board(moveMade(0)).ForeColor = Color.Empty
+            board(moveMade(0)).BackgroundImage = pict
+            If (pict Is Nothing) Then
+                board(moveMade(0)).ForeColor = Color.Empty
+            Else
+                board(moveMade(0)).ForeColor = Color.White
+            End If
             board(moveMade(1)).ForeColor = Color.Black
-            player = 2
-            Label1.Text = "Player 2's Turn"
-            Button1.Enabled = False
-        Else
-            board(moveMade(1)).BackgroundImage = board(moveMade(0)).BackgroundImage
-            board(moveMade(0)).BackgroundImage = Nothing
-            board(moveMade(0)).ForeColor = Color.Empty
+                player = 2
+                Label1.Text = "Player 2's Turn"
+                Button1.Enabled = False
+            Else
+                board(moveMade(1)).BackgroundImage = board(moveMade(0)).BackgroundImage
+            board(moveMade(0)).BackgroundImage = pict
+            If (pict Is Nothing) Then
+                board(moveMade(0)).ForeColor = Color.Empty
+            Else
+                board(moveMade(0)).ForeColor = Color.Black
+            End If
             board(moveMade(1)).ForeColor = Color.White
             player = 1
             Label1.Text = "Player 1's Turn"
