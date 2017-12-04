@@ -115,6 +115,17 @@
                         WinKing()
                         Moved()
                         PawnQueen()
+                    ElseIf (piece - 16 = num) And (Math.Ceiling(piece / 8) = 7) And (board(piece - 16).BackgroundImage Is Nothing) Then
+                        pict = board(num).BackgroundImage
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.White
+                        board(piece).ForeColor = Color.Empty
+                        player = 2
+                        Label1.Text = "Player 2's Turn"
+                        WinKing()
+                        Moved()
+                        PawnQueen()
                     End If
 
                 ElseIf (board(piece).BackgroundImage Is wr) Then
@@ -632,6 +643,17 @@
                         Moved()
                         PawnQueen()
                     ElseIf (piece + 9 = num Or piece + 7 = num) Then
+                        pict = board(num).BackgroundImage
+                        board(num).BackgroundImage = board(piece).BackgroundImage
+                        board(piece).BackgroundImage = Nothing
+                        board(num).ForeColor = Color.Black
+                        board(piece).ForeColor = Color.Empty
+                        player = 1
+                        Label1.Text = "Player 1's Turn"
+                        WinKing()
+                        Moved()
+                        PawnQueen()
+                    ElseIf (piece + 16 = num) And (Math.Ceiling(piece / 8) = 2) And (board(piece + 16).BackgroundImage Is Nothing) Then
                         pict = board(num).BackgroundImage
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
@@ -1277,6 +1299,9 @@
             If (piece - 9 > 0) And (board(piece - 9).ForeColor = Color.Black) Then
                 board(piece - 9).BackColor = Color.Yellow
             End If
+            If (Math.Ceiling(piece / 8) = 7) And (board(piece - 16).BackgroundImage Is Nothing) Then
+                board(piece - 16).BackColor = Color.Yellow
+            End If
 
 
         ElseIf (board(piece).BackgroundImage Is bp) Then
@@ -1288,6 +1313,9 @@
             End If
             If (piece + 9 < 65) And (board(piece + 9).ForeColor = Color.White) Then
                 board(piece + 9).BackColor = Color.Yellow
+            End If
+            If (Math.Ceiling(piece / 8) = 2) And (board(piece + 16).BackgroundImage Is Nothing) Then
+                board(piece + 16).BackColor = Color.Yellow
             End If
 
 
