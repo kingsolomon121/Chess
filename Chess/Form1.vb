@@ -4,11 +4,14 @@
 
     Public Sub Colorer()
         For count As Integer = 1 To 64
-            If ((count Mod 16) Mod 2 = 0 Xor count Mod 16 > 7) Then
+            If ((count Mod 16) Mod 2 = 0 Xor count Mod 16 > 8) Then
                 board(count).BackColor = Color.Empty
             Else
                 board(count).BackColor = Color.Maroon
             End If
+        Next
+        For count As Integer = 16 To 64 Step 16
+            board(count).BackColor = Color.Maroon
         Next
     End Sub
     Dim clicked As Boolean = False
@@ -27,6 +30,7 @@
             clicked = False
             MovePiece(num)
             Button2.Enabled = False
+            Colorer()
         End If
     End Sub
 
@@ -49,7 +53,6 @@
     Public Sub Moved()
         moveMade = {num, piece}
         Button1.Enabled = True
-        Colorer()
     End Sub
 
     Public Sub WinKing()
@@ -147,6 +150,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece - 1 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
                         If (piece - (1 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -164,6 +170,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece + 1 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
                         If (piece + (1 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -182,7 +191,7 @@
                     Next
 
                 ElseIf (board(piece).BackgroundImage Is wn) Then
-                    If (piece - 17 = num) Then
+                    If (piece - 17 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 16) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -191,7 +200,7 @@
                         Label1.Text = "Player 2's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece - 15 = num) Then
+                    ElseIf (piece - 15 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 16) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -200,7 +209,7 @@
                         Label1.Text = "Player 2's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 17 = num) Then
+                    ElseIf (piece + 17 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 16) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -209,7 +218,7 @@
                         Label1.Text = "Player 2's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 15 = num) Then
+                    ElseIf (piece + 15 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 16) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -218,7 +227,7 @@
                         Label1.Text = "Player 2's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece - 10 = num) Then
+                    ElseIf (piece - 10 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 8) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -227,7 +236,7 @@
                         Label1.Text = "Player 2's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 10 = num) Then
+                    ElseIf (piece + 10 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 8) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -236,7 +245,7 @@
                         Label1.Text = "Player 2's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece - 6 = num) Then
+                    ElseIf (piece - 6 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 8) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -245,7 +254,7 @@
                         Label1.Text = "Player 2's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 6 = num) Then
+                    ElseIf (piece + 6 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 8) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -258,6 +267,9 @@
 
                 ElseIf (board(piece).BackgroundImage Is wb) Then
                     For counter As Integer = 1 To 7
+                        If ((piece - 7 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
                         If (piece - (7 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -275,6 +287,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece + 7 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
                         If (piece + (7 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -292,6 +307,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece - 9 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
                         If (piece - (9 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -309,6 +327,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece + 9 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
                         If (piece + (9 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -328,6 +349,9 @@
 
                 ElseIf (board(piece).BackgroundImage Is wq) Then
                     For counter As Integer = 1 To 7
+                        If ((piece - 7 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
                         If (piece - (7 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -345,6 +369,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece + 7 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
                         If (piece + (7 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -362,6 +389,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece - 9 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
                         If (piece - (9 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -379,6 +409,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece + 9 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
                         If (piece + (9 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -430,6 +463,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece - 1 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
                         If (piece - (1 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -447,6 +483,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece + 1 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
                         If (piece + (1 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -465,7 +504,7 @@
                     Next
 
                 ElseIf (board(piece).BackgroundImage Is wk) Then
-                    If (piece - 1 = num) Then
+                    If (piece - 1 = num) And (Math.Ceiling((piece - 1) / 8) = Math.Ceiling(piece / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -474,7 +513,7 @@
                         Label1.Text = "Player 2's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 1 = num) Then
+                    ElseIf (piece + 1 = num) And (Math.Ceiling((piece + 1) / 8) = Math.Ceiling(piece / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -519,7 +558,7 @@
                         Label1.Text = "Player 2's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece - 7 = num) Then
+                    ElseIf (piece - 7 = num) And Not (Math.Ceiling((piece - 7) / 8) = Math.Ceiling(piece / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -528,7 +567,7 @@
                         Label1.Text = "Player 2's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 7 = num) Then
+                    ElseIf (piece + 7 = num) And Not (Math.Ceiling((piece + 7) / 8) = Math.Ceiling(piece / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.White
@@ -604,6 +643,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece - 1 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
                         If (piece - (1 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -621,6 +663,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece + 1 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
                         If (piece + (1 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -639,7 +684,7 @@
                     Next
 
                 ElseIf (board(piece).BackgroundImage Is bn) Then
-                    If (piece - 17 = num) Then
+                    If (piece - 17 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 16) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -648,7 +693,7 @@
                         Label1.Text = "Player 1's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece - 15 = num) Then
+                    ElseIf (piece - 15 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 16) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -657,7 +702,7 @@
                         Label1.Text = "Player 1's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 17 = num) Then
+                    ElseIf (piece + 17 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 16) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -666,7 +711,7 @@
                         Label1.Text = "Player 1's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 15 = num) Then
+                    ElseIf (piece + 15 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 16) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -675,7 +720,7 @@
                         Label1.Text = "Player 1's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece - 10 = num) Then
+                    ElseIf (piece - 10 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 8) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -684,7 +729,7 @@
                         Label1.Text = "Player 1's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 10 = num) Then
+                    ElseIf (piece + 10 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 8) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -693,7 +738,7 @@
                         Label1.Text = "Player 1's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece - 6 = num) Then
+                    ElseIf (piece - 6 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece - 8) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -702,7 +747,7 @@
                         Label1.Text = "Player 1's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 6 = num) Then
+                    ElseIf (piece + 6 = num) And (Math.Ceiling((num) / 8) = Math.Ceiling((piece + 8) / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -715,6 +760,9 @@
 
                 ElseIf (board(piece).BackgroundImage Is bb) Then
                     For counter As Integer = 1 To 7
+                        If ((piece - 7 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
                         If (piece - (7 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -732,6 +780,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece + 7 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
                         If (piece + (7 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -749,6 +800,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece - 9 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
                         If (piece - (9 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -766,6 +820,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece + 9 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
                         If (piece + (9 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -784,74 +841,6 @@
                     Next
 
                 ElseIf (board(piece).BackgroundImage Is bq) Then
-                    For counter As Integer = 1 To 7
-                        If (piece - (7 * counter) = num) Then
-                            board(num).BackgroundImage = board(piece).BackgroundImage
-                            board(piece).BackgroundImage = Nothing
-                            board(num).ForeColor = Color.Black
-                            board(piece).ForeColor = Color.Empty
-                            player = 1
-                            Label1.Text = "Player 1's Turn"
-                            WinKing()
-                            Moved()
-                        End If
-                        If (piece - (7 * counter) > 0 And piece - (7 * counter) < 65) Then
-                            If Not (board(piece - (7 * counter))).BackgroundImage Is Nothing Then
-                                Exit For
-                            End If
-                        End If
-                    Next
-                    For counter As Integer = 1 To 7
-                        If (piece + (7 * counter) = num) Then
-                            board(num).BackgroundImage = board(piece).BackgroundImage
-                            board(piece).BackgroundImage = Nothing
-                            board(num).ForeColor = Color.Black
-                            board(piece).ForeColor = Color.Empty
-                            player = 1
-                            Label1.Text = "Player 1's Turn"
-                            WinKing()
-                            Moved()
-                        End If
-                        If (piece + (7 * counter) > 0 And piece + (7 * counter) < 65) Then
-                            If Not (board(piece + (7 * counter))).BackgroundImage Is Nothing Then
-                                Exit For
-                            End If
-                        End If
-                    Next
-                    For counter As Integer = 1 To 7
-                        If (piece - (9 * counter) = num) Then
-                            board(num).BackgroundImage = board(piece).BackgroundImage
-                            board(piece).BackgroundImage = Nothing
-                            board(num).ForeColor = Color.Black
-                            board(piece).ForeColor = Color.Empty
-                            player = 1
-                            Label1.Text = "Player 1's Turn"
-                            WinKing()
-                            Moved()
-                        End If
-                        If (piece - (9 * counter) > 0 And piece - (9 * counter) < 65) Then
-                            If Not (board(piece - (9 * counter))).BackgroundImage Is Nothing Then
-                                Exit For
-                            End If
-                        End If
-                    Next
-                    For counter As Integer = 1 To 7
-                        If (piece + (9 * counter) = num) Then
-                            board(num).BackgroundImage = board(piece).BackgroundImage
-                            board(piece).BackgroundImage = Nothing
-                            board(num).ForeColor = Color.Black
-                            board(piece).ForeColor = Color.Empty
-                            player = 1
-                            Label1.Text = "Player 1's Turn"
-                            WinKing()
-                            Moved()
-                        End If
-                        If (piece + (9 * counter) > 0 And piece + (9 * counter) < 65) Then
-                            If Not (board(piece + (9 * counter))).BackgroundImage Is Nothing Then
-                                Exit For
-                            End If
-                        End If
-                    Next
                     For counter As Integer = 1 To 7
                         If (piece - (8 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
@@ -887,6 +876,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece - 1 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
                         If (piece - (1 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -904,6 +896,9 @@
                         End If
                     Next
                     For counter As Integer = 1 To 7
+                        If ((piece + 1 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
                         If (piece + (1 * counter) = num) Then
                             board(num).BackgroundImage = board(piece).BackgroundImage
                             board(piece).BackgroundImage = Nothing
@@ -920,9 +915,89 @@
                             End If
                         End If
                     Next
+                    For counter As Integer = 1 To 7
+                        If ((piece - 7 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
+                        If (piece - (7 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (7 * counter) > 0 And piece - (7 * counter) < 65) Then
+                            If Not (board(piece - (7 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If ((piece + 7 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
+                        If (piece + (7 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (7 * counter) > 0 And piece + (7 * counter) < 65) Then
+                            If Not (board(piece + (7 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If ((piece - 9 * counter) Mod 8 = 0) Then
+                            Exit For
+                        End If
+                        If (piece - (9 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece - (9 * counter) > 0 And piece - (9 * counter) < 65) Then
+                            If Not (board(piece - (9 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
+                    For counter As Integer = 1 To 7
+                        If ((piece + 9 * counter) Mod 8 = 1) Then
+                            Exit For
+                        End If
+                        If (piece + (9 * counter) = num) Then
+                            board(num).BackgroundImage = board(piece).BackgroundImage
+                            board(piece).BackgroundImage = Nothing
+                            board(num).ForeColor = Color.Black
+                            board(piece).ForeColor = Color.Empty
+                            player = 1
+                            Label1.Text = "Player 1's Turn"
+                            WinKing()
+                            Moved()
+                        End If
+                        If (piece + (9 * counter) > 0 And piece + (9 * counter) < 65) Then
+                            If Not (board(piece + (9 * counter))).BackgroundImage Is Nothing Then
+                                Exit For
+                            End If
+                        End If
+                    Next
 
                 ElseIf (board(piece).BackgroundImage Is bk) Then
-                    If (piece - 1 = num) Then
+                    If (piece - 1 = num) And (Math.Ceiling((piece - 1) / 8) = Math.Ceiling(piece / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -931,7 +1006,7 @@
                         Label1.Text = "Player 1's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 1 = num) Then
+                    ElseIf (piece + 1 = num) And (Math.Ceiling((piece + 1) / 8) = Math.Ceiling(piece / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -976,7 +1051,7 @@
                         Label1.Text = "Player 1's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece - 7 = num) Then
+                    ElseIf (piece - 7 = num) And Not (Math.Ceiling((piece - 7) / 8) = Math.Ceiling(piece / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -985,7 +1060,7 @@
                         Label1.Text = "Player 1's Turn"
                         WinKing()
                         Moved()
-                    ElseIf (piece + 7 = num) Then
+                    ElseIf (piece + 7 = num) And Not (Math.Ceiling((piece + 7) / 8) = Math.Ceiling(piece / 8)) Then
                         board(num).BackgroundImage = board(piece).BackgroundImage
                         board(piece).BackgroundImage = Nothing
                         board(num).ForeColor = Color.Black
@@ -1111,68 +1186,711 @@
         End If
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
+        Dim startR As Integer = (piece + 1) - (piece Mod 8)
         Dim i As Integer
+
         If (board(piece).BackgroundImage Is wp) Then
-            If (board(piece - 8).BackgroundImage Is Nothing) Then
+            If (piece - 8 > 0) And (board(piece - 8).BackgroundImage Is Nothing) Then
                 board(piece - 8).BackColor = Color.Yellow
             End If
-            If (board(piece - 9).ForeColor = Color.Black) Then
-                board(piece - 9).BackColor = Color.Yellow
-            End If
-            If (board(piece - 7).ForeColor = Color.Black) Then
+            If (piece - 7 > 0) And (board(piece - 7).ForeColor = Color.Black) Then
                 board(piece - 7).BackColor = Color.Yellow
             End If
+            If (piece - 9 > 0) And (board(piece - 9).ForeColor = Color.Black) Then
+                board(piece - 9).BackColor = Color.Yellow
+            End If
+
 
         ElseIf (board(piece).BackgroundImage Is bp) Then
-            If (board(piece + 8).BackgroundImage Is Nothing) Then
+            If (piece + 8 < 65) And (board(piece + 8).BackgroundImage Is Nothing) Then
                 board(piece + 8).BackColor = Color.Yellow
             End If
-            If (board(piece + 9).ForeColor = Color.White) Then
-                board(piece + 9).BackColor = Color.Yellow
-            End If
-            If (board(piece + 7).ForeColor = Color.White) Then
+            If (piece + 7 < 65) And (board(piece + 7).ForeColor = Color.White) Then
                 board(piece + 7).BackColor = Color.Yellow
             End If
+            If (piece + 9 < 65) And (board(piece + 9).ForeColor = Color.White) Then
+                board(piece + 9).BackColor = Color.Yellow
+            End If
+
 
         ElseIf (board(piece).BackgroundImage Is wr) Then
             For i = 1 To 7
-                If (piece - (8 * i) > 0 And (piece - (8 * i) < 65)) Then
-                    If (board(piece - (8 * i)).BackgroundImage Is Nothing) Then
-                        board(piece - (8 * i)).BackColor = Color.Yellow
+                If (piece - i * 8 > 0) Then
+                    If (board(piece - 8 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 8 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 8 * i).ForeColor = Color.Black) Then
+                            board(piece - 8 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece + i * 8 < 65) Then
+                    If (board(piece + 8 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 8 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 8 * i).ForeColor = Color.Black) Then
+                            board(piece + 8 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece + 1 * i < 65) Then
+                    If ((piece + 1 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece + 1 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 1 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 1 * i).ForeColor = Color.Black) Then
+                            board(piece + 1 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece - 1 * i > 0) Then
+                    If ((piece - 1 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece - 1 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 1 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 1 * i).ForeColor = Color.Black) Then
+                            board(piece - 1 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
 
+
+        ElseIf (board(piece).BackgroundImage Is br) Then
+            For i = 1 To 7
+                If (piece - i * 8 > 0) Then
+                    If (board(piece - 8 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 8 * i).BackColor = Color.Yellow
                     Else
+                        If (board(piece - 8 * i).ForeColor = Color.White) Then
+                            board(piece - 8 * i).BackColor = Color.Yellow
+                        End If
                         Exit For
                     End If
                 End If
             Next i
             For i = 1 To 7
-                If (piece + (8 * i) > 0 And (piece + (8 * i) < 65)) Then
-                    If (board(piece + (8 * i)).BackgroundImage Is Nothing) Then
-                        board(piece + (8 * i)).BackColor = Color.Yellow
+                If (piece + i * 8 < 65) Then
+                    If (board(piece + 8 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 8 * i).BackColor = Color.Yellow
                     Else
+                        If (board(piece + 8 * i).ForeColor = Color.White) Then
+                            board(piece + 8 * i).BackColor = Color.Yellow
+                        End If
                         Exit For
                     End If
                 End If
             Next i
             For i = 1 To 7
-                If (piece - (1 * i) > 0 And (piece - (1 * i) < 65)) Then
-                    If (board(piece - (1 * i)).BackgroundImage Is Nothing) Then
-                        board(piece - (1 * i)).BackColor = Color.Yellow
+                If (piece + 1 * i < 65) Then
+                    If ((piece + 1 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece + 1 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 1 * i).BackColor = Color.Yellow
                     Else
+                        If (board(piece + 1 * i).ForeColor = Color.White) Then
+                            board(piece + 1 * i).BackColor = Color.Yellow
+                        End If
                         Exit For
                     End If
                 End If
             Next i
             For i = 1 To 7
-                If (piece + (1 * i) > 0 And (piece + (1 * i) < 65)) Then
-                    If (board(piece + (1 * i)).BackgroundImage Is Nothing) Then
-                        board(piece + (1 * i)).BackColor = Color.Yellow
+                If (piece - 1 * i > 0) Then
+                    If ((piece - 1 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece - 1 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 1 * i).BackColor = Color.Yellow
                     Else
+                        If (board(piece - 1 * i).ForeColor = Color.White) Then
+                            board(piece - 1 * i).BackColor = Color.Yellow
+                        End If
                         Exit For
                     End If
                 End If
             Next i
+
+
+        ElseIf (board(piece).BackgroundImage Is wn) Then
+            If (piece - 17 > 0) And (Math.Ceiling((piece - 17) / 8) = Math.Ceiling((piece - 16) / 8)) Then
+                If (board(piece - 17).BackgroundImage Is Nothing) Or (board(piece - 17).ForeColor = Color.Black) Then
+                    board(piece - 17).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece - 15 > 0) And (Math.Ceiling((piece - 15) / 8) = Math.Ceiling((piece - 16) / 8)) Then
+                If (board(piece - 15).BackgroundImage Is Nothing) Or (board(piece - 15).ForeColor = Color.Black) Then
+                    board(piece - 15).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece + 17 < 65) And (Math.Ceiling((piece + 17) / 8) = Math.Ceiling((piece + 16) / 8)) Then
+                If (board(piece + 17).BackgroundImage Is Nothing) Or (board(piece + 17).ForeColor = Color.Black) Then
+                    board(piece + 17).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece + 15 < 65) And (Math.Ceiling((piece + 15) / 8) = Math.Ceiling((piece + 16) / 8)) Then
+                If (board(piece + 15).BackgroundImage Is Nothing) Or (board(piece + 15).ForeColor = Color.Black) Then
+                    board(piece + 15).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece - 10 > 0) And (Math.Ceiling((piece - 10) / 8) = Math.Ceiling((piece - 8) / 8)) Then
+                If (board(piece - 10).BackgroundImage Is Nothing) Or (board(piece - 10).ForeColor = Color.Black) Then
+                    board(piece - 10).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece - 6 > 0) And (Math.Ceiling((piece - 6) / 8) = Math.Ceiling((piece - 8) / 8)) Then
+                If (board(piece - 6).BackgroundImage Is Nothing) Or (board(piece - 6).ForeColor = Color.Black) Then
+                    board(piece - 6).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece + 10 < 65) And (Math.Ceiling((piece + 10) / 8) = Math.Ceiling((piece + 8) / 8)) Then
+                If (board(piece + 10).BackgroundImage Is Nothing) Or (board(piece + 10).ForeColor = Color.Black) Then
+                    board(piece + 10).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece + 6 < 65) And (Math.Ceiling((piece + 6) / 8) = Math.Ceiling((piece + 8) / 8)) Then
+                If (board(piece + 6).BackgroundImage Is Nothing) Or (board(piece + 6).ForeColor = Color.Black) Then
+                    board(piece + 6).BackColor = Color.Yellow
+                End If
+            End If
+
+
+        ElseIf (board(piece).BackgroundImage Is bn) Then
+            If (piece - 17 > 0) And (Math.Ceiling((piece - 17) / 8) = Math.Ceiling((piece - 16) / 8)) Then
+                If (board(piece - 17).BackgroundImage Is Nothing) Or (board(piece - 17).ForeColor = Color.White) Then
+                    board(piece - 17).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece - 15 > 0) And (Math.Ceiling((piece - 15) / 8) = Math.Ceiling((piece - 16) / 8)) Then
+                If (board(piece - 15).BackgroundImage Is Nothing) Or (board(piece - 15).ForeColor = Color.White) Then
+                    board(piece - 15).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece + 17 < 65) And (Math.Ceiling((piece + 17) / 8) = Math.Ceiling((piece + 16) / 8)) Then
+                If (board(piece + 17).BackgroundImage Is Nothing) Or (board(piece + 17).ForeColor = Color.White) Then
+                    board(piece + 17).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece + 15 < 65) And (Math.Ceiling((piece + 15) / 8) = Math.Ceiling((piece + 16) / 8)) Then
+                If (board(piece + 15).BackgroundImage Is Nothing) Or (board(piece + 15).ForeColor = Color.White) Then
+                    board(piece + 15).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece - 10 > 0) And (Math.Ceiling((piece - 10) / 8) = Math.Ceiling((piece - 8) / 8)) Then
+                If (board(piece - 10).BackgroundImage Is Nothing) Or (board(piece - 10).ForeColor = Color.White) Then
+                    board(piece - 10).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece - 6 > 0) And (Math.Ceiling((piece - 6) / 8) = Math.Ceiling((piece - 8) / 8)) Then
+                If (board(piece - 6).BackgroundImage Is Nothing) Or (board(piece - 6).ForeColor = Color.White) Then
+                    board(piece - 6).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece + 10 < 65) And (Math.Ceiling((piece + 10) / 8) = Math.Ceiling((piece + 8) / 8)) Then
+                If (board(piece + 10).BackgroundImage Is Nothing) Or (board(piece + 10).ForeColor = Color.White) Then
+                    board(piece + 10).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece + 6 < 65) And (Math.Ceiling((piece + 6) / 8) = Math.Ceiling((piece + 8) / 8)) Then
+                If (board(piece + 6).BackgroundImage Is Nothing) Or (board(piece + 6).ForeColor = Color.White) Then
+                    board(piece + 6).BackColor = Color.Yellow
+                End If
+            End If
+
+
+        ElseIf (board(piece).BackgroundImage Is wb) Then
+            For i = 1 To 7
+                If (piece - 7 * i > 0) Then
+                    If ((piece - 7 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece - 7 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 7 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 7 * i).ForeColor = Color.Black) Then
+                            board(piece - 7 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece - 9 * i > 0) Then
+                    If ((piece - 9 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece - 9 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 9 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 9 * i).ForeColor = Color.Black) Then
+                            board(piece - 9 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece + 7 * i < 65) Then
+                    If ((piece + 7 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece + 7 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 7 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 7 * i).ForeColor = Color.Black) Then
+                            board(piece + 7 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece + 9 * i < 65) Then
+                    If ((piece + 9 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece + 9 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 9 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 9 * i).ForeColor = Color.Black) Then
+                            board(piece + 9 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+
+
+        ElseIf (board(piece).BackgroundImage Is bb) Then
+            For i = 1 To 7
+                If (piece - 7 * i > 0) Then
+                    If ((piece - 7 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece - 7 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 7 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 7 * i).ForeColor = Color.White) Then
+                            board(piece - 7 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece - 9 * i > 0) Then
+                    If ((piece - 9 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece - 9 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 9 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 9 * i).ForeColor = Color.White) Then
+                            board(piece - 9 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece + 7 * i < 65) Then
+                    If ((piece + 7 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece + 7 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 7 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 7 * i).ForeColor = Color.White) Then
+                            board(piece + 7 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece + 9 * i < 65) Then
+                    If ((piece + 9 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece + 9 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 9 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 9 * i).ForeColor = Color.White) Then
+                            board(piece + 9 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+
+
+        ElseIf (board(piece).BackgroundImage Is wq) Then
+            For i = 1 To 7
+                If (piece - 7 * i > 0) Then
+                    If ((piece - 7 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece - 7 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 7 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 7 * i).ForeColor = Color.Black) Then
+                            board(piece - 7 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece - 9 * i > 0) Then
+                    If ((piece - 9 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece - 9 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 9 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 9 * i).ForeColor = Color.Black) Then
+                            board(piece - 9 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece + 7 * i < 65) Then
+                    If ((piece + 7 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece + 7 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 7 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 7 * i).ForeColor = Color.Black) Then
+                            board(piece + 7 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece + 9 * i < 65) Then
+                    If ((piece + 9 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece + 9 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 9 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 9 * i).ForeColor = Color.Black) Then
+                            board(piece + 9 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece - i * 8 > 0) Then
+                    If (board(piece - 8 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 8 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 8 * i).ForeColor = Color.Black) Then
+                            board(piece - 8 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece + i * 8 < 65) Then
+                    If (board(piece + 8 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 8 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 8 * i).ForeColor = Color.Black) Then
+                            board(piece + 8 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece + 1 * i < 65) Then
+                    If ((piece + 1 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece + 1 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 1 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 1 * i).ForeColor = Color.Black) Then
+                            board(piece + 1 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece - 1 * i > 0) Then
+                    If ((piece - 1 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece - 1 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 1 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 1 * i).ForeColor = Color.Black) Then
+                            board(piece - 1 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
+
+
+        ElseIf (board(piece).BackgroundImage Is bq) Then
+            For i = 1 To 7
+                If (piece - 7 * i > 0) Then
+                    If ((piece - 7 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece - 7 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 7 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 7 * i).ForeColor = Color.White) Then
+                            board(piece - 7 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece - 9 * i > 0) Then
+                    If ((piece - 9 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece - 9 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 9 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 9 * i).ForeColor = Color.White) Then
+                            board(piece - 9 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece + 7 * i < 65) Then
+                    If ((piece + 7 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece + 7 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 7 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 7 * i).ForeColor = Color.White) Then
+                            board(piece + 7 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece + 9 * i < 65) Then
+                    If ((piece + 9 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece + 9 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 9 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 9 * i).ForeColor = Color.White) Then
+                            board(piece + 9 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next
+            For i = 1 To 7
+                If (piece - i * 8 > 0) Then
+                    If (board(piece - 8 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 8 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 8 * i).ForeColor = Color.White) Then
+                            board(piece - 8 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece + i * 8 < 65) Then
+                    If (board(piece + 8 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 8 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 8 * i).ForeColor = Color.White) Then
+                            board(piece + 8 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece + 1 * i < 65) Then
+                    If ((piece + 1 * i) Mod 8 = 1) Then
+                        Exit For
+                    End If
+                    If (board(piece + 1 * i).BackgroundImage Is Nothing) Then
+                        board(piece + 1 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece + 1 * i).ForeColor = Color.White) Then
+                            board(piece + 1 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
+            For i = 1 To 7
+                If (piece - 1 * i > 0) Then
+                    If ((piece - 1 * i) Mod 8 = 0) Then
+                        Exit For
+                    End If
+                    If (board(piece - 1 * i).BackgroundImage Is Nothing) Then
+                        board(piece - 1 * i).BackColor = Color.Yellow
+                    Else
+                        If (board(piece - 1 * i).ForeColor = Color.White) Then
+                            board(piece - 1 * i).BackColor = Color.Yellow
+                        End If
+                        Exit For
+                    End If
+                End If
+            Next i
+
+
+        ElseIf (board(piece).BackgroundImage Is wk) Then
+            If (Math.Ceiling((piece - 1) / 8) = Math.Ceiling(piece / 8)) Then
+                If (board(piece - 1).BackgroundImage Is Nothing) Then
+                    board(piece - 1).BackColor = Color.Yellow
+                ElseIf (board(piece - 1).ForeColor = Color.Black) Then
+                    board(piece - 1).BackColor = Color.Yellow
+                End If
+            End If
+            If (Math.Ceiling((piece + 1) / 8) = Math.Ceiling(piece / 8)) Then
+                If (board(piece + 1).BackgroundImage Is Nothing) Then
+                    board(piece + 1).BackColor = Color.Yellow
+                ElseIf (board(piece + 1).ForeColor = Color.Black) Then
+                    board(piece + 1).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece - 8 > 0) Then
+                If (board(piece - 8).BackgroundImage Is Nothing) Then
+                    board(piece - 8).BackColor = Color.Yellow
+                ElseIf (board(piece - 8).ForeColor = Color.Black) Then
+                    board(piece - 8).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece + 8 < 65) Then
+                If (board(piece + 8).BackgroundImage Is Nothing) Then
+                    board(piece + 8).BackColor = Color.Yellow
+                ElseIf (board(piece + 8).ForeColor = Color.Black) Then
+                    board(piece + 8).BackColor = Color.Yellow
+                End If
+            End If
+            If (Math.Ceiling((piece - 9) / 8) = Math.Ceiling((piece - 8) / 8)) And (piece - 9 > 0) Then
+                If (board(piece - 9).BackgroundImage Is Nothing) Then
+                    board(piece - 9).BackColor = Color.Yellow
+                ElseIf (board(piece - 9).ForeColor = Color.Black) Then
+                    board(piece - 9).BackColor = Color.Yellow
+                End If
+            End If
+            If Not (Math.Ceiling((piece - 7) / 8) = Math.Ceiling((piece) / 8)) And (piece - 7 > 0) Then
+                If (board(piece - 7).BackgroundImage Is Nothing) Then
+                    board(piece - 7).BackColor = Color.Yellow
+                ElseIf (board(piece - 7).ForeColor = Color.Black) Then
+                    board(piece - 7).BackColor = Color.Yellow
+                End If
+            End If
+            If (Math.Ceiling((piece + 9) / 8) = Math.Ceiling((piece + 8) / 8)) And (piece + 9 < 65) Then
+                If (board(piece + 9).BackgroundImage Is Nothing) Then
+                    board(piece + 9).BackColor = Color.Yellow
+                ElseIf (board(piece + 9).ForeColor = Color.Black) Then
+                    board(piece + 9).BackColor = Color.Yellow
+                End If
+            End If
+            If Not (Math.Ceiling((piece + 7) / 8) = Math.Ceiling((piece) / 8)) And (piece + 7 < 65) Then
+                If (board(piece + 7).BackgroundImage Is Nothing) Then
+                    board(piece + 7).BackColor = Color.Yellow
+                ElseIf (board(piece + 7).ForeColor = Color.Black) Then
+                    board(piece + 7).BackColor = Color.Yellow
+                End If
+            End If
+
+
+        ElseIf (board(piece).BackgroundImage Is bk) Then
+            If (Math.Ceiling((piece - 1) / 8) = Math.Ceiling(piece / 8)) Then
+                If (board(piece - 1).BackgroundImage Is Nothing) Then
+                    board(piece - 1).BackColor = Color.Yellow
+                ElseIf (board(piece - 1).ForeColor = Color.White) Then
+                    board(piece - 1).BackColor = Color.Yellow
+                End If
+            End If
+            If (Math.Ceiling((piece + 1) / 8) = Math.Ceiling(piece / 8)) Then
+                If (board(piece + 1).BackgroundImage Is Nothing) Then
+                    board(piece + 1).BackColor = Color.Yellow
+                ElseIf (board(piece + 1).ForeColor = Color.White) Then
+                    board(piece + 1).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece - 8 > 0) Then
+                If (board(piece - 8).BackgroundImage Is Nothing) Then
+                    board(piece - 8).BackColor = Color.Yellow
+                ElseIf (board(piece - 8).ForeColor = Color.White) Then
+                    board(piece - 8).BackColor = Color.Yellow
+                End If
+            End If
+            If (piece + 8 < 65) Then
+                If (board(piece + 8).BackgroundImage Is Nothing) Then
+                    board(piece + 8).BackColor = Color.Yellow
+                ElseIf (board(piece + 8).ForeColor = Color.White) Then
+                    board(piece + 8).BackColor = Color.Yellow
+                End If
+            End If
+            If (Math.Ceiling((piece - 9) / 8) = Math.Ceiling((piece - 8) / 8)) And (piece - 9 > 0) Then
+                If (board(piece - 9).BackgroundImage Is Nothing) Then
+                    board(piece - 9).BackColor = Color.Yellow
+                ElseIf (board(piece - 9).ForeColor = Color.White) Then
+                    board(piece - 9).BackColor = Color.Yellow
+                End If
+            End If
+            If Not (Math.Ceiling((piece - 7) / 8) = Math.Ceiling((piece) / 8)) And (piece - 7 > 0) Then
+                If (board(piece - 7).BackgroundImage Is Nothing) Then
+                    board(piece - 7).BackColor = Color.Yellow
+                ElseIf (board(piece - 7).ForeColor = Color.White) Then
+                    board(piece - 7).BackColor = Color.Yellow
+                End If
+            End If
+            If (Math.Ceiling((piece + 9) / 8) = Math.Ceiling((piece + 8) / 8)) And (piece + 9 < 65) Then
+                If (board(piece + 9).BackgroundImage Is Nothing) Then
+                    board(piece + 9).BackColor = Color.Yellow
+                ElseIf (board(piece + 9).ForeColor = Color.White) Then
+                    board(piece + 9).BackColor = Color.Yellow
+                End If
+            End If
+            If Not (Math.Ceiling((piece + 7) / 8) = Math.Ceiling((piece) / 8)) And (piece + 7 < 65) Then
+                If (board(piece + 7).BackgroundImage Is Nothing) Then
+                    board(piece + 7).BackColor = Color.Yellow
+                ElseIf (board(piece + 7).ForeColor = Color.White) Then
+                    board(piece + 7).BackColor = Color.Yellow
+                End If
+            End If
+
         End If
     End Sub
 End Class
