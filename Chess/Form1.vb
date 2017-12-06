@@ -1177,6 +1177,8 @@
             board(i).BackgroundImageLayout = ImageLayout.Stretch
             board(i).Tag = i
             AddHandler board(i).Click, AddressOf Me.Button_Click
+            AddHandler board(i).MouseEnter, AddressOf Me.MouseEnterShadows
+            AddHandler board(i).MouseLeave, AddressOf Me.MouseLeaveShadows
         Next i
 
         For i = 1 To 8
@@ -1251,6 +1253,8 @@
         board(63).ForeColor = Color.White
         board(64).ForeColor = Color.White
     End Sub
+
+
 
     Private Sub Button_Click(sender As Object, e As EventArgs)
         CheckSpace(CType(CType(sender,
@@ -1997,5 +2001,14 @@
             End If
 
         End If
+    End Sub
+    Dim coler As Color
+    Private Sub MouseEnterShadows(sender As Object, e As EventArgs)
+        coler = board(CType(CType(sender, System.Windows.Forms.Button).Tag, Integer)).BackColor
+        board(CType(CType(sender, System.Windows.Forms.Button).Tag, Integer)).BackColor = Color.GreenYellow
+    End Sub
+
+    Public Sub MouseLeaveShadows(sender As Object, e As EventArgs)
+        board(CType(CType(sender, System.Windows.Forms.Button).Tag, Integer)).BackColor = coler
     End Sub
 End Class
