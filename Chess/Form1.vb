@@ -4,7 +4,7 @@
 'Chess Program
 
 Public Class Form1
-    'Array of buttons for all the board spaces
+    'Array of buttons for all the board spaces ()
     Dim board(64) As Button
     'color variable to decide if the board starts with a white of black space
     Dim col As Integer = 0
