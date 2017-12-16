@@ -50,6 +50,7 @@ Public Class Form1
     Dim secplayer As String
     'Stores the total number of moves that have been made
     Dim moves As Integer = 0
+    Dim length As Integer = 64
 
     'Creates All the Buttons and assigns them with the correct event handlers, images and forecolors
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -2118,7 +2119,7 @@ Public Class Form1
             End If
         Next counter
 
-        testboardpos = boardpos
+        Copy(boardpos, testboardpos, length)
 
         For space = 1 To 64
             If (board(space).ForeColor = Color.Black) Then
@@ -2179,11 +2180,13 @@ Public Class Form1
 
     Public Sub Calculate()
         For counter As Integer = 1 To 64
-            If (testboardpos(counter) = 0) Then
-                blacktot += Pawnval(counter)
-                MsgBox(firstplayer AI(counter))
+            If Not (testboardpos(counter) = boardpos(counter)) Then
+                MsgBox(boardpos(counter))
                 MsgBox(testboardpos(counter))
                 MsgBox(counter)
+            End If
+            If (testboardpos(counter) = 0) Then
+                blacktot += Pawnval(counter)
             End If
             If (testboardpos(counter) = 1) Then
                 blacktot += Rookval(counter)
@@ -2224,7 +2227,10 @@ Public Class Form1
         whitetot = 0
         blacktot = 0
         eval = 0
-        testboardpos = boardpos
+        Copy(boardpos, testboardpos, length)
+    End Sub
+
+    Public Shared Sub Copy(boardpos As Array, testboardpos As Array, length As Integer)
     End Sub
 End Class
 
