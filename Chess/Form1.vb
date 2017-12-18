@@ -143,10 +143,10 @@ Public Class Form1
         firstplayer = InputBox("What is Player 1's name?")
         secplayer = InputBox("What is Player 2's name?")
 
-        MsgBox("This program abides by all of the rules of chess, with the exclusion of castling and en passant. " & firstplayer & " will play white and " & secplayer & " will play black.")
+        MsgBox("This program abides by all of the rules of chess, with the exclusion of en passant. " & firstplayer & " will play white and " & secplayer & " will play black.")
         Label1.Text = firstplayer & "'s Turn!"
 
-        Pawnval = {0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 10, -20, -20, 10, 10, 5, 5, -5, -10, 0, 0, -10, -5, 5, 0, 0, 0, 20, 20, 0, 0, 0, 5, 5, 10, 25, 25, 10, 5, 5, 10, 10, 20, 30, 30, 20, 10, 10, 50, 50, 50, 50, 50, 50, 50, 50, 0, 0, 0, 0, 0, 0, 0, 0}
+        Pawnval = {0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 10, -20, -20, 10, 10, 5, 5, -5, -10, 0, 0, -10, -5, 5, 0, 0, 0, 20, 20, 0, 0, 0, 5, 5, 10, 25, 25, 10, 5, 5, 10, 10, 20, 30, 30, 20, 10, 10, 50, 50, 50, 50, 50, 50, 50, 50, 90, 90, 90, 90, 90, 90, 90, 90}
         Knightval = {-50, -40, -30, -30, -30, -30, -40, -50, -40, -20, 0, 5, 5, 0, -20, -40, -30, 5, 10, 15, 15, 10, 5, -30, -30, 0, 15, 20, 20, 15, 0, -30, -30, 5, 15, 20, 20, 15, 5, -30, -30, 0, 10, 15, 15, 10, 0, -30, -40, -20, 0, 0, 0, 0, -20, -40, -50, -40, -30, -30, -30, -30, -40, -50}
         Bishopval = {-20, -10, -10, -10, -10, -10, -10, -20, -10, 0, 0, 0, 0, 0, 0, -10, -10, 0, 5, 10, 10, 5, 0, -10, -10, 5, 5, 10, 10, 5, 5, -10, -10, 0, 10, 10, 10, 10, 0, -10, -10, 10, 10, 10, 10, 10, 10, -10, -10, 5, 0, 0, 0, 0, 5, -10, -20, -10, -10, -10, -10, -10, -10, -20}
         Rookval = {0, 0, 0, 5, 5, 0, 0, 0, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, 5, 10, 10, 10, 10, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -938,13 +938,15 @@ Public Class Form1
         End If
     End Sub
 
-    'Runs after a piece has been moved
+    'Runs after a piece has been movedxxxxxxxxxxxxxx
     Public Sub Moved()
         moveMade(0) = num
         moveMade(1) = piece
         Button1.Enabled = True
 
-        BlackCheck()
+        If (BlackCheck() = True) Then
+            MsgBox("Black is in Check!")
+        End If
         WhiteCheck()
     End Sub
 
@@ -960,10 +962,10 @@ Public Class Form1
             Exit Sub
         End If
         If (player = 1) Then
-            MsgBox("Player 2 Wins!!")
+            MsgBox(secplayer & " Wins!!")
             MostUsed()
         Else
-            MsgBox("Player 1 Wins!!")
+            MsgBox(firstplayer & " Wins!!")
             MostUsed()
         End If
     End Sub
@@ -1247,29 +1249,38 @@ Public Class Form1
                     Next counter
 
                 ElseIf (board(piece).BackgroundImage Is wk) Then
+                    Castle()
                     If (piece - 1 = num) And (Math.Ceiling((piece - 1) / 8) = Math.Ceiling(piece / 8)) Then
                         white(5) += 1
+                        wkingmove = True
                         WhiteMover()
                     ElseIf (piece + 1 = num) And (Math.Ceiling((piece + 1) / 8) = Math.Ceiling(piece / 8)) Then
                         white(5) += 1
+                        wkingmove = True
                         WhiteMover()
                     ElseIf (piece - 8 = num) Then
                         white(5) += 1
+                        wkingmove = True
                         WhiteMover()
                     ElseIf (piece + 8 = num) Then
                         white(5) += 1
+                        wkingmove = True
                         WhiteMover()
                     ElseIf (piece - 9 = num) Then
                         white(5) += 1
+                        wkingmove = True
                         WhiteMover()
                     ElseIf (piece + 9 = num) Then
                         white(5) += 1
+                        wkingmove = True
                         WhiteMover()
                     ElseIf (piece - 7 = num) And Not (Math.Ceiling((piece - 7) / 8) = Math.Ceiling(piece / 8)) Then
                         white(5) += 1
+                        wkingmove = True
                         WhiteMover()
                     ElseIf (piece + 7 = num) And Not (Math.Ceiling((piece + 7) / 8) = Math.Ceiling(piece / 8)) Then
                         white(5) += 1
+                        wkingmove = True
                         WhiteMover()
                     End If
                 End If
@@ -1539,29 +1550,38 @@ Public Class Form1
                     Next counter
 
                 ElseIf (board(piece).BackgroundImage Is bk) Then
+                    Castle()
                     If (piece - 1 = num) And (Math.Ceiling((piece - 1) / 8) = Math.Ceiling(piece / 8)) Then
                         black(5) += 1
+                        bkingmove = True
                         BlackMover()
                     ElseIf (piece + 1 = num) And (Math.Ceiling((piece + 1) / 8) = Math.Ceiling(piece / 8)) Then
                         black(5) += 1
+                        bkingmove = True
                         BlackMover()
                     ElseIf (piece - 8 = num) Then
                         black(5) += 1
+                        bkingmove = True
                         BlackMover()
                     ElseIf (piece + 8 = num) Then
                         black(5) += 1
+                        bkingmove = True
                         BlackMover()
                     ElseIf (piece - 9 = num) Then
                         black(5) += 1
+                        bkingmove = True
                         BlackMover()
                     ElseIf (piece + 9 = num) Then
                         black(5) += 1
+                        bkingmove = True
                         BlackMover()
                     ElseIf (piece - 7 = num) And Not (Math.Ceiling((piece - 7) / 8) = Math.Ceiling(piece / 8)) Then
                         black(5) += 1
+                        bkingmove = True
                         BlackMover()
                     ElseIf (piece + 7 = num) And Not (Math.Ceiling((piece + 7) / 8) = Math.Ceiling(piece / 8)) Then
                         black(5) += 1
+                        bkingmove = True
                         BlackMover()
                     End If
                 End If
@@ -1620,7 +1640,10 @@ Public Class Form1
         End If
 
         MsgBox("White's most used piece was the " & wpieceS & " and they moved it " & wmax & " times.")
-        MsgBox("Black's most used piece was the " & bpieceS & " and they moved it " & bmax & " times.")
+        If (AI = 1) Then
+            MsgBox("Black's most used piece was the " & bpieceS & " and they moved it " & bmax & " times.")
+        End If
+        Close()
     End Sub
 
     'Event Handler for all board squares which changes the color of whichever space you are on
@@ -1691,10 +1714,9 @@ Public Class Form1
     End Sub
 
     'Decides if black is in check
-    Public Sub BlackCheck()
+    Public Function BlackCheck() As Boolean
         Dim i As Integer
         Dim king As Integer
-
         For i = 1 To 64
             If (board(i).BackgroundImage Is bk) Then
                 king = i
@@ -1704,8 +1726,9 @@ Public Class Form1
         For i = 1 To 7
             If (king + 8 * i < 65) Then
                 If (board(king + 8 * i).ForeColor = Color.White) And ((board(king + 8 * i).BackgroundImage Is wr) Or (board(king + 8 * i).BackgroundImage Is wq)) Then
-                    MsgBox("Black is in Check!")
-                    Exit Sub
+
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king + 8 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -1716,8 +1739,9 @@ Public Class Form1
         For i = 1 To 7
             If (king - 8 * i > 0) Then
                 If (board(king - 8 * i).ForeColor = Color.White) And ((board(king - 8 * i).BackgroundImage Is wr) Or (board(king - 8 * i).BackgroundImage Is wq)) Then
-                    MsgBox("Black is in Check!")
-                    Exit Sub
+
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king - 8 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -1730,8 +1754,8 @@ Public Class Form1
                 Exit For
             End If
             If (board(king - 1 * i).ForeColor = Color.White) And ((board(king - 1 * i).BackgroundImage Is wr) Or (board(king - 1 * i).BackgroundImage Is wq)) Then
-                MsgBox("Black is in Check!")
-                Exit Sub
+                Return True
+                Exit Function
             End If
             If Not (board(king - 1 * i).BackgroundImage Is Nothing) Then
                 Exit For
@@ -1743,8 +1767,9 @@ Public Class Form1
                 Exit For
             End If
             If (board(king + 1 * i).ForeColor = Color.White) And ((board(king + 1 * i).BackgroundImage Is wr) Or (board(king + 1 * i).BackgroundImage Is wq)) Then
-                MsgBox("Black is in Check!")
-                Exit Sub
+
+                Return True
+                Exit Function
             End If
             If Not (board(king + 1 * i).BackgroundImage Is Nothing) Then
                 Exit For
@@ -1757,8 +1782,9 @@ Public Class Form1
                     Exit For
                 End If
                 If (board(king - 9 * i).ForeColor = Color.White) And ((board(king - 9 * i).BackgroundImage Is wb) Or (board(king - 9 * i).BackgroundImage Is wq)) Then
-                    MsgBox("Black is in Check")
-                    Exit Sub
+
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king - 9 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -1772,8 +1798,9 @@ Public Class Form1
                     Exit For
                 End If
                 If (board(king + 9 * i).ForeColor = Color.White) And ((board(king + 9 * i).BackgroundImage Is wb) Or (board(king + 9 * i).BackgroundImage Is wq)) Then
-                    MsgBox("Black is in Check")
-                    Exit Sub
+
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king + 9 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -1787,8 +1814,9 @@ Public Class Form1
                     Exit For
                 End If
                 If (board(king - 7 * i).ForeColor = Color.White) And ((board(king - 7 * i).BackgroundImage Is wb) Or (board(king - 7 * i).BackgroundImage Is wq)) Then
-                    MsgBox("Black is in Check")
-                    Exit Sub
+
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king - 7 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -1802,8 +1830,9 @@ Public Class Form1
                     Exit For
                 End If
                 If (board(king + 7 * i).ForeColor = Color.White) And ((board(king + 7 * i).BackgroundImage Is wb) Or (board(king + 7 * i).BackgroundImage Is wq)) Then
-                    MsgBox("Black is in Check")
-                    Exit Sub
+
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king + 7 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -1813,74 +1842,84 @@ Public Class Form1
 
         If (king + 9 < 65) Then
             If (board(king + 9).BackgroundImage Is wp) Then
-                MsgBox("Black is in Check")
-                Exit Sub
+
+                Return True
+                Exit Function
             End If
         End If
 
         If (king + 7 < 65) Then
             If (board(king + 7).BackgroundImage Is wp) Then
-                MsgBox("Black is in Check")
-                Exit Sub
+
+                Return True
+                Exit Function
             End If
         End If
 
         If (king + 17 < 65) Then
             If (board(king + 17).BackgroundImage Is wn) Then
-                MsgBox("Black is in Check")
-                Exit Sub
+
+                Return True
+                Exit Function
             End If
         End If
 
         If (king - 17 > 0) Then
             If (board(king - 17).BackgroundImage Is wn) Then
-                MsgBox("Black is in Check")
-                Exit Sub
+
+                Return True
+                Exit Function
             End If
         End If
 
         If (king + 15 < 65) Then
             If (board(king + 15).BackgroundImage Is wn) Then
-                MsgBox("Black is in Check")
-                Exit Sub
+
+                Return True
+                Exit Function
             End If
         End If
 
         If (king - 15 > 0) Then
             If (board(king - 15).BackgroundImage Is wn) Then
-                MsgBox("Black is in Check")
-                Exit Sub
+
+                Return True
+                Exit Function
             End If
         End If
 
         If (king + 10 < 65) Then
             If (board(king + 10).BackgroundImage Is wn) Then
-                MsgBox("Black is in Check")
-                Exit Sub
+
+                Return True
+                Exit Function
             End If
         End If
 
         If (king - 10 > 0) Then
             If (board(king - 10).BackgroundImage Is wn) Then
-                MsgBox("Black is in Check")
-                Exit Sub
+
+                Return True
+                Exit Function
             End If
         End If
 
         If (king + 6 < 65) Then
             If (board(king + 6).BackgroundImage Is wn) Then
-                MsgBox("Black is in Check")
-                Exit Sub
+
+                Return True
+                Exit Function
             End If
         End If
 
         If (king - 6 > 0) Then
             If (board(king - 6).BackgroundImage Is wn) Then
-                MsgBox("Black is in Check")
-                Exit Sub
+
+                Return True
+                Exit Function
             End If
         End If
-    End Sub
+    End Function
 
     'Decides if white is in check
     Public Sub WhiteCheck()
@@ -2074,6 +2113,91 @@ Public Class Form1
         End If
     End Sub
 
+    Dim wkingmove As Boolean = False
+    Dim bkingmove As Boolean = False
+
+    Public Sub Castle()
+        If (player = 1) And (wkingmove = False) Then
+            If (num = 58) And (board(59).BackgroundImage Is Nothing) And (board(58).BackgroundImage Is Nothing) Then
+                board(57).BackgroundImage = Nothing
+                board(58).BackgroundImage = wk
+                board(59).BackgroundImage = wr
+                board(60).BackgroundImage = Nothing
+                board(57).ForeColor = Nothing
+                board(58).ForeColor = Color.White
+                board(59).ForeColor = Color.White
+                board(60).ForeColor = Nothing
+                player = 2
+                Label1.Text = secplayer & "'s Turn"
+                WinKing()
+                Button1.Enabled = False
+                moves += 1
+                Label3.Text = "Total Moves: " & moves
+                wkingmove = True
+                If (AI = 1) Then
+                    AImove()
+                End If
+            ElseIf (num = 62) And (board(63).BackgroundImage Is Nothing) And (board(62).BackgroundImage Is Nothing) And (board(61).BackgroundImage Is Nothing) Then
+                board(60).BackgroundImage = Nothing
+                board(60).ForeColor = Nothing
+                board(61).BackgroundImage = wr
+                board(61).ForeColor = Color.White
+                board(62).BackgroundImage = wk
+                board(62).ForeColor = Color.White
+                board(63).BackgroundImage = Nothing
+                board(63).ForeColor = Nothing
+                board(64).BackgroundImage = Nothing
+                board(64).ForeColor = Nothing
+                player = 2
+                Label1.Text = secplayer & "'s Turn"
+                WinKing()
+                Button1.Enabled = False
+                moves += 1
+                Label3.Text = "Total Moves: " & moves
+                wkingmove = True
+                If (AI = 1) Then
+                    AImove()
+                End If
+            End If
+        ElseIf (player = 2) And (bkingmove = False) Then
+            If (num = 2) And (board(2).BackgroundImage Is Nothing) And (board(3).BackgroundImage Is Nothing) Then
+                board(1).BackgroundImage = Nothing
+                board(1).ForeColor = Nothing
+                board(2).BackgroundImage = bk
+                board(2).ForeColor = Color.Black
+                board(3).BackgroundImage = br
+                board(3).ForeColor = Color.Black
+                board(4).BackgroundImage = Nothing
+                board(4).ForeColor = Nothing
+                player = 1
+                Label1.Text = firstplayer & "'s Turn"
+                WinKing()
+                Button1.Enabled = False
+                moves += 1
+                Label3.Text = "Total Moves: " & moves
+                bkingmove = True
+            ElseIf (num = 6) And (board(5).BackgroundImage Is Nothing) And (board(6).BackgroundImage Is Nothing) And (board(7).BackgroundImage Is Nothing) Then
+                board(4).BackgroundImage = Nothing
+                board(4).ForeColor = Nothing
+                board(5).BackgroundImage = br
+                board(5).ForeColor = Color.Black
+                board(6).BackgroundImage = bk
+                board(6).ForeColor = Color.Black
+                board(7).BackgroundImage = Nothing
+                board(7).ForeColor = Nothing
+                board(8).BackgroundImage = Nothing
+                board(8).ForeColor = Nothing
+                player = 1
+                Label1.Text = firstplayer & "'s Turn"
+                WinKing()
+                Button1.Enabled = False
+                moves += 1
+                Label3.Text = "Total Moves: " & moves
+                bkingmove = True
+            End If
+        End If
+    End Sub
+
     Dim AI As Integer
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         If (AI = 0) Then
@@ -2087,6 +2211,9 @@ Public Class Form1
     Dim space As Integer
     Dim boardpos(64) As Integer
     Dim testboardpos(64) As Integer
+    Dim movetospace As Integer
+    Dim spacef As Integer
+    Dim movetospacef As Integer
     Public Sub AImove()
         boardpos(0) = 52
         For counter As Integer = 1 To 64
@@ -2119,7 +2246,9 @@ Public Class Form1
             End If
         Next counter
 
-        Copy(boardpos, testboardpos, length)
+        For j As Integer = 1 To 64
+            testboardpos(j) = boardpos(j)
+        Next j
 
         For space = 1 To 64
             If (board(space).ForeColor = Color.Black) Then
@@ -2138,34 +2267,702 @@ Public Class Form1
                 End If
             End If
         Next space
+        AiMover()
     End Sub
 
     Public Sub AIpawn()
-        If (space + 8 < 65) And (board(space + 8).BackgroundImage Is Nothing) Then
-            testboardpos(space + 8) = 0
-            testboardpos(space) = 12
-            Calculate()
+        If (space + 8 < 65) Then
+            If (board(space + 8).BackgroundImage Is Nothing) Then
+                testboardpos(space + 8) = 0
+                testboardpos(space) = 12
+                movetospace = space + 8
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+
+        If (space + 9 < 65) Then
+            If (board(space + 9).ForeColor = Color.White) And (Math.Ceiling((space + 9) / 8) = Math.Ceiling((space) / 8) + 1) Then
+                testboardpos(space + 9) = 0
+                testboardpos(space) = 12
+                movetospace = space + 9
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space + 7 < 65) Then
+            If (board(space + 7).ForeColor = Color.White) And (Math.Ceiling((space + 9) / 7) = Math.Ceiling((space) / 7) + 1) Then
+                testboardpos(space + 7) = 0
+                testboardpos(space) = 12
+                movetospace = space + 7
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+
+        If (space + 16 < 65) Then
+            If (Math.Ceiling((space + 16) / 8) = 4) And (board(space + 16).BackgroundImage Is Nothing) Then
+                testboardpos(space + 16) = 0
+                testboardpos(space) = 12
+                movetospace = space + 16
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
         End If
     End Sub
 
     Public Sub AIrook()
+        Dim counter As Integer
 
+        For counter = 1 To 7
+            If (space - counter * 8 > 0) Then
+                If (board(space - counter * 8).BackgroundImage Is Nothing) Then
+                    testboardpos(space - counter * 8) = 1
+                    testboardpos(space) = 12
+                    movetospace = space - counter * 8
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space - counter * 8).ForeColor = Color.White) Then
+                        testboardpos(space - counter * 8) = 1
+                        testboardpos(space) = 12
+                        movetospace = space - counter * 8
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next counter
+        For counter = 1 To 7
+            If (space + counter * 8 < 65) Then
+                If (board(space + counter * 8).BackgroundImage Is Nothing) Then
+                    testboardpos(space + counter * 8) = 1
+                    testboardpos(space) = 12
+                    movetospace = space + counter * 8
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space + counter * 8).ForeColor = Color.White) Then
+                        testboardpos(space + counter * 8) = 1
+                        testboardpos(space) = 12
+                        movetospace = space + counter * 8
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next counter
+        For counter = 1 To 7
+            If (space + counter < 65) Then
+                If ((space + counter) Mod 8 = 1) Then
+                    Exit For
+                End If
+                If (board(space + counter).BackgroundImage Is Nothing) Then
+                    testboardpos(space + counter) = 1
+                    testboardpos(space) = 12
+                    movetospace = space + counter
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space + counter).ForeColor = Color.White) Then
+                        testboardpos(space + counter) = 1
+                        testboardpos(space) = 12
+                        movetospace = space + counter
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next counter
+        For counter = 1 To 7
+            If (space - counter > 0) Then
+                If ((space - counter) Mod 8 = 0) Then
+                    Exit For
+                End If
+                If (board(space - counter).BackgroundImage Is Nothing) Then
+                    testboardpos(space - counter) = 1
+                    testboardpos(space) = 12
+                    movetospace = space - counter
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space - counter).ForeColor = Color.White) Then
+                        testboardpos(space - counter) = 1
+                        testboardpos(space) = 12
+                        movetospace = space - counter
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next counter
     End Sub
 
     Public Sub AIknight()
-
+        If (space + 17 < 65) Then
+            If (Math.Ceiling((space + 17) / 8) = Math.Ceiling(space / 8) + 2) And ((board(space + 17).BackgroundImage Is Nothing) Or (board(space + 17).ForeColor = Color.White)) Then
+                testboardpos(space + 17) = 2
+                testboardpos(space) = 12
+                movetospace = space + 17
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space + 15 < 65) Then
+            If (Math.Ceiling((space + 15) / 8) = Math.Ceiling(space / 8) + 2) And ((board(space + 15).BackgroundImage Is Nothing) Or (board(space + 15).ForeColor = Color.White)) Then
+                testboardpos(space + 15) = 2
+                testboardpos(space) = 12
+                movetospace = space + 15
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space - 17 > 0) Then
+            If (Math.Ceiling((space - 17) / 8) = Math.Ceiling(space / 8) - 2) And ((board(space - 17).BackgroundImage Is Nothing) Or (board(space - 17).ForeColor = Color.White)) Then
+                testboardpos(space - 17) = 2
+                testboardpos(space) = 12
+                movetospace = space - 17
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space - 15 > 0) Then
+            If (Math.Ceiling((space - 15) / 8) = Math.Ceiling(space / 8) - 2) And ((board(space - 15).BackgroundImage Is Nothing) Or (board(space - 15).ForeColor = Color.White)) Then
+                testboardpos(space - 15) = 2
+                testboardpos(space) = 12
+                movetospace = space - 15
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space + 6 < 65) Then
+            If (Math.Ceiling((space + 6) / 8) = Math.Ceiling(space / 8) + 1) And ((board(space + 6).BackgroundImage Is Nothing) Or (board(space + 6).ForeColor = Color.White)) Then
+                testboardpos(space + 6) = 2
+                testboardpos(space) = 12
+                movetospace = space + 6
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space + 10 < 65) Then
+            If (Math.Ceiling((space + 10) / 8) = Math.Ceiling(space / 8) + 1) And ((board(space + 10).BackgroundImage Is Nothing) Or (board(space + 10).ForeColor = Color.White)) Then
+                testboardpos(space + 10) = 2
+                testboardpos(space) = 12
+                movetospace = space + 10
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space - 6 > 0) Then
+            If (Math.Ceiling((space - 6) / 8) = Math.Ceiling(space / 8) - 1) And ((board(space - 6).BackgroundImage Is Nothing) Or (board(space - 6).ForeColor = Color.White)) Then
+                testboardpos(space - 6) = 2
+                testboardpos(space) = 12
+                movetospace = space - 6
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space - 10 > 0) Then
+            If (Math.Ceiling((space - 10) / 8) = Math.Ceiling(space / 8) - 1) And ((board(space - 10).BackgroundImage Is Nothing) Or (board(space - 10).ForeColor = Color.White)) Then
+                testboardpos(space - 10) = 2
+                testboardpos(space) = 12
+                movetospace = space - 10
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
     End Sub
 
     Public Sub AIbishop()
+        Dim i As Integer
 
+        For i = 1 To 64
+            If (space + 7 * i < 65) Then
+                If ((space + 7 * i) Mod 8 = 0) Then
+                    Exit For
+                End If
+                If (board(space + 7 * i).BackgroundImage Is Nothing) Then
+                    testboardpos(space + 7 * i) = 3
+                    testboardpos(space) = 12
+                    movetospace = space + 7 * i
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space + 7 * i).ForeColor = Color.White) Then
+                        testboardpos(space + 7 * i) = 3
+                        testboardpos(space) = 12
+                        movetospace = space + 7 * i
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next i
+        For i = 1 To 64
+            If (space - 7 * i > 0) Then
+                If ((space - 7 * i) Mod 8 = 1) Then
+                    Exit For
+                End If
+                If (board(space - 7 * i).BackgroundImage Is Nothing) Then
+                    testboardpos(space - 7 * i) = 3
+                    testboardpos(space) = 12
+                    movetospace = space - 7 * i
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space - 7 * i).ForeColor = Color.White) Then
+                        testboardpos(space - 7 * i) = 3
+                        testboardpos(space) = 12
+                        movetospace = space - 7 * i
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next i
+        For i = 1 To 64
+            If (space + 9 * i < 65) Then
+                If ((space + 9 * i) Mod 8 = 1) Then
+                    Exit For
+                End If
+                If (board(space + 9 * i).BackgroundImage Is Nothing) Then
+                    testboardpos(space + 9 * i) = 3
+                    testboardpos(space) = 12
+                    movetospace = space + 9 * i
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space + 9 * i).ForeColor = Color.White) Then
+                        testboardpos(space + 9 * i) = 3
+                        testboardpos(space) = 12
+                        movetospace = space + 9 * i
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next i
+        For i = 1 To 64
+            If (space - 9 * i > 0) Then
+                If ((space - 9 * i) Mod 8 = 0) Then
+                    Exit For
+                End If
+                If (board(space - 9 * i).BackgroundImage Is Nothing) Then
+                    testboardpos(space - 9 * i) = 3
+                    testboardpos(space) = 12
+                    movetospace = space - 9 * i
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space - 9 * i).ForeColor = Color.White) Then
+                        testboardpos(space - 9 * i) = 3
+                        testboardpos(space) = 12
+                        movetospace = space - 9 * i
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next i
     End Sub
 
     Public Sub AIking()
-
+        If (space + 8 < 65) Then
+            If (board(space + 8).BackgroundImage Is Nothing) Or (board(space + 8).ForeColor = Color.White) Then
+                testboardpos(space + 8) = 5
+                testboardpos(space) = 12
+                movetospace = space + 8
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space - 8 > 0) Then
+            If (board(space - 8).BackgroundImage Is Nothing) Or (board(space - 8).ForeColor = Color.White) Then
+                testboardpos(space - 8) = 5
+                testboardpos(space) = 12
+                movetospace = space - 8
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space + 7 < 65) Then
+            If ((board(space + 7).BackgroundImage Is Nothing) Or (board(space + 7).ForeColor = Color.White)) And ((space + 7) Mod 8 = 0) Then
+                testboardpos(space + 7) = 5
+                testboardpos(space) = 12
+                movetospace = space + 7
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space - 7 > 0) Then
+            If ((board(space - 7).BackgroundImage Is Nothing) Or (board(space - 7).ForeColor = Color.White)) And ((space - 7) Mod 8 = 1) Then
+                testboardpos(space - 7) = 5
+                testboardpos(space) = 12
+                movetospace = space - 7
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space + 9 < 65) Then
+            If ((board(space + 9).BackgroundImage Is Nothing) Or (board(space + 9).ForeColor = Color.White)) And ((space + 9) Mod 8 = 1) Then
+                testboardpos(space + 9) = 5
+                testboardpos(space) = 12
+                movetospace = space + 9
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
+        If (space - 9 > 0) Then
+            If ((board(space - 9).BackgroundImage Is Nothing) Or (board(space - 9).ForeColor = Color.White)) And ((space - 9) Mod 8 = 0) Then
+                testboardpos(space - 9) = 5
+                testboardpos(space) = 12
+                movetospace = space - 9
+                If (BlackCheck() = True) Then
+                    AiinCheck()
+                Else
+                    Calculate()
+                End If
+            End If
+        End If
     End Sub
 
     Public Sub AIqueen()
+        Dim i As Integer
+        Dim counter As Integer
 
+        For counter = 1 To 7
+            If (space - counter * 8 > 0) Then
+                If (board(space - counter * 8).BackgroundImage Is Nothing) Then
+                    testboardpos(space - counter * 8) = 4
+                    testboardpos(space) = 12
+                    movetospace = space - counter * 8
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space - counter * 8).ForeColor = Color.White) Then
+                        testboardpos(space - counter * 8) = 4
+                        testboardpos(space) = 12
+                        movetospace = space - counter * 8
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next counter
+        For counter = 1 To 7
+            If (space + counter * 8 < 65) Then
+                If (board(space + counter * 8).BackgroundImage Is Nothing) Then
+                    testboardpos(space + counter * 8) = 4
+                    testboardpos(space) = 12
+                    movetospace = space + counter * 8
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space + counter * 8).ForeColor = Color.White) Then
+                        testboardpos(space + counter * 8) = 4
+                        testboardpos(space) = 12
+                        movetospace = space + counter * 8
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next counter
+        For counter = 1 To 7
+            If (space + counter < 65) Then
+                If ((space + counter) Mod 8 = 1) Then
+                    Exit For
+                End If
+                If (board(space + counter).BackgroundImage Is Nothing) Then
+                    testboardpos(space + counter) = 4
+                    testboardpos(space) = 12
+                    movetospace = space + counter
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space + counter).ForeColor = Color.White) Then
+                        testboardpos(space + counter) = 4
+                        testboardpos(space) = 12
+                        movetospace = space + counter
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next counter
+        For counter = 1 To 7
+            If (space - counter > 0) Then
+                If ((space - counter) Mod 8 = 0) Then
+                    Exit For
+                End If
+                If (board(space - counter).BackgroundImage Is Nothing) Then
+                    testboardpos(space - counter) = 4
+                    testboardpos(space) = 12
+                    movetospace = space - counter
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space - counter).ForeColor = Color.White) Then
+                        testboardpos(space - counter) = 4
+                        testboardpos(space) = 12
+                        movetospace = space - counter
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next counter
+        For i = 1 To 64
+            If (space + 7 * i < 65) Then
+                If ((space + 7 * i) Mod 8 = 0) Then
+                    Exit For
+                End If
+                If (board(space + 7 * i).BackgroundImage Is Nothing) Then
+                    testboardpos(space + 7 * i) = 4
+                    testboardpos(space) = 12
+                    movetospace = space + 7 * i
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space + 7 * i).ForeColor = Color.White) Then
+                        testboardpos(space + 7 * i) = 4
+                        testboardpos(space) = 12
+                        movetospace = space + 7 * i
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next i
+        For i = 1 To 64
+            If (space - 7 * i > 0) Then
+                If ((space - 7 * i) Mod 8 = 1) Then
+                    Exit For
+                End If
+                If (board(space - 7 * i).BackgroundImage Is Nothing) Then
+                    testboardpos(space - 7 * i) = 4
+                    testboardpos(space) = 12
+                    movetospace = space - 7 * i
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space - 7 * i).ForeColor = Color.White) Then
+                        testboardpos(space - 7 * i) = 4
+                        testboardpos(space) = 12
+                        movetospace = space - 7 * i
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next i
+        For i = 1 To 64
+            If (space + 9 * i < 65) Then
+                If ((space + 9 * i) Mod 8 = 1) Then
+                    Exit For
+                End If
+                If (board(space + 9 * i).BackgroundImage Is Nothing) Then
+                    testboardpos(space + 9 * i) = 4
+                    testboardpos(space) = 12
+                    movetospace = space + 9 * i
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space + 9 * i).ForeColor = Color.White) Then
+                        testboardpos(space + 9 * i) = 4
+                        testboardpos(space) = 12
+                        movetospace = space + 9 * i
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next i
+        For i = 1 To 64
+            If (space - 9 * i > 0) Then
+                If ((space - 9 * i) Mod 8 = 0) Then
+                    Exit For
+                End If
+                If (board(space - 9 * i).BackgroundImage Is Nothing) Then
+                    testboardpos(space - 9 * i) = 4
+                    testboardpos(space) = 12
+                    movetospace = space - 9 * i
+                    If (BlackCheck() = True) Then
+                        AiinCheck()
+                    Else
+                        Calculate()
+                    End If
+                Else
+                    If (board(space - 9 * i).ForeColor = Color.White) Then
+                        testboardpos(space - 9 * i) = 4
+                        testboardpos(space) = 12
+                        movetospace = space - 9 * i
+                        If (BlackCheck() = True) Then
+                            AiinCheck()
+                        Else
+                            Calculate()
+                        End If
+                    End If
+                    Exit For
+                End If
+            End If
+        Next i
     End Sub
 
     Dim Pawnval(63) As Integer
@@ -2177,61 +2974,121 @@ Public Class Form1
     Dim whitetot As Integer
     Dim blacktot As Integer
     Dim eval As Integer
+    Dim best As Integer = -1000000
 
     Public Sub Calculate()
+        Dim kings As Integer
         For counter As Integer = 1 To 64
-            If Not (testboardpos(counter) = boardpos(counter)) Then
-                MsgBox(boardpos(counter))
-                MsgBox(testboardpos(counter))
-                MsgBox(counter)
-            End If
             If (testboardpos(counter) = 0) Then
-                blacktot += Pawnval(counter)
+                blacktot += Pawnval(counter - 1)
             End If
             If (testboardpos(counter) = 1) Then
-                blacktot += Rookval(counter)
+                blacktot += Rookval(counter - 1)
             End If
             If (testboardpos(counter) = 2) Then
-                blacktot += Knightval(counter)
+                blacktot += Knightval(counter - 1)
             End If
             If (testboardpos(counter) = 3) Then
-                blacktot += Bishopval(counter)
+                blacktot += Bishopval(counter - 1)
             End If
             If (testboardpos(counter) = 4) Then
-                blacktot += Queenval(counter)
+                blacktot += Queenval(counter - 1)
             End If
             If (testboardpos(counter) = 5) Then
-                blacktot += Kingval(counter)
+                blacktot += Kingval(counter - 1)
             End If
             If (testboardpos(counter) = 6) Then
-                whitetot += Pawnval(64 - counter)
+                whitetot += Pawnval(65 - counter - 1)
             End If
             If (testboardpos(counter) = 7) Then
-                whitetot += Rookval(64 - counter)
+                whitetot += Rookval(65 - counter - 1)
             End If
             If (testboardpos(counter) = 8) Then
-                whitetot += Knightval(64 - counter)
+                whitetot += Knightval(65 - counter - 1)
             End If
             If (testboardpos(counter) = 9) Then
-                whitetot += Bishopval(64 - counter)
+                whitetot += Bishopval(65 - counter - 1)
             End If
             If (testboardpos(counter) = 10) Then
-                whitetot += Queenval(64 - counter)
+                whitetot += Queenval(65 - counter - 1)
             End If
             If (testboardpos(counter) = 11) Then
-                whitetot += Kingval(64 - counter)
+                whitetot += Kingval(65 - counter - 1)
             End If
         Next
         eval = blacktot - whitetot
-        MsgBox(eval)
+        If (eval > best) Then
+            best = eval
+            spacef = space
+            movetospacef = movetospace
+        End If
+        For counter As Integer = 1 To 64
+            If (testboardpos(counter) = 11) Then
+                kings = 1
+            End If
+        Next
+        If (kings = 0) Then
+            best = 100000000
+            spacef = space
+            movetospacef = movetospace
+        End If
         whitetot = 0
         blacktot = 0
         eval = 0
-        Copy(boardpos, testboardpos, length)
+        kings = 0
+        For j As Integer = 1 To 64
+            testboardpos(j) = boardpos(j)
+        Next j
     End Sub
 
-    Public Shared Sub Copy(boardpos As Array, testboardpos As Array, length As Integer)
+    Public Sub AiMover()
+        board(movetospacef).BackgroundImage = board(spacef).BackgroundImage
+        board(spacef).BackgroundImage = Nothing
+        board(spacef).ForeColor = Nothing
+        board(movetospacef).ForeColor = Color.Black
+        Button1.Enabled = False
+        player = 1
+        Label1.Text = firstplayer & "'s Turn"
+        best = -10000000
+        WhiteCheck()
+        WinKing()
+    End Sub
+
+    Public Sub AiinCheck()
+        Dim picture As Image
+
+        picture = board(movetospace).BackgroundImage
+        board(movetospace).BackgroundImage = board(space).BackgroundImage
+        board(movetospace).ForeColor = Color.Black
+        board(space).BackgroundImage = Nothing
+        board(space).ForeColor = Nothing
+
+
+        If (BlackCheck() = True) Then
+            If (picture Is Nothing) Then
+                board(space).BackgroundImage = board(movetospace).BackgroundImage
+                board(movetospace).BackgroundImage = picture
+                board(movetospace).ForeColor = Nothing
+                board(space).ForeColor = Color.Black
+            Else
+                board(space).BackgroundImage = board(movetospace).BackgroundImage
+                board(movetospace).BackgroundImage = picture
+                board(movetospace).ForeColor = Color.White
+                board(space).ForeColor = Color.Black
+            End If
+            Exit Sub
+        End If
+        If (picture Is Nothing) Then
+            board(space).BackgroundImage = board(movetospace).BackgroundImage
+            board(movetospace).BackgroundImage = picture
+            board(movetospace).ForeColor = Nothing
+            board(space).ForeColor = Color.Black
+        Else
+            board(space).BackgroundImage = board(movetospace).BackgroundImage
+            board(movetospace).BackgroundImage = picture
+            board(movetospace).ForeColor = Color.White
+            board(space).ForeColor = Color.Black
+        End If
+        Calculate()
     End Sub
 End Class
-
-
