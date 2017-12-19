@@ -4,7 +4,7 @@
 'Chess Program
 
 Public Class Form1
-    'Array of buttons for all the board spaces ()
+    'Array of buttons for all the board spaces
     Dim board(64) As Button
     'color variable to decide if the board starts with a white of black space
     Dim col As Integer = 0
@@ -149,7 +149,7 @@ Public Class Form1
         Pawnval = {0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 10, -20, -20, 10, 10, 5, 5, -5, -10, 0, 0, -10, -5, 5, 0, 0, 0, 20, 20, 0, 0, 0, 5, 5, 10, 25, 25, 10, 5, 5, 10, 10, 20, 30, 30, 20, 10, 10, 50, 50, 50, 50, 50, 50, 50, 50, 90, 90, 90, 90, 90, 90, 90, 90}
         Knightval = {-50, -40, -30, -30, -30, -30, -40, -50, -40, -20, 0, 5, 5, 0, -20, -40, -30, 5, 10, 15, 15, 10, 5, -30, -30, 0, 15, 20, 20, 15, 0, -30, -30, 5, 15, 20, 20, 15, 5, -30, -30, 0, 10, 15, 15, 10, 0, -30, -40, -20, 0, 0, 0, 0, -20, -40, -50, -40, -30, -30, -30, -30, -40, -50}
         Bishopval = {-20, -10, -10, -10, -10, -10, -10, -20, -10, 0, 0, 0, 0, 0, 0, -10, -10, 0, 5, 10, 10, 5, 0, -10, -10, 5, 5, 10, 10, 5, 5, -10, -10, 0, 10, 10, 10, 10, 0, -10, -10, 10, 10, 10, 10, 10, 10, -10, -10, 5, 0, 0, 0, 0, 5, -10, -20, -10, -10, -10, -10, -10, -10, -20}
-        Rookval = {0, 0, 0, 5, 5, 0, 0, 0, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, 5, 10, 10, 10, 10, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0}
+        Rookval = {0, 0, 0, 5, 6, 0, 0, 0, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, 5, 10, 10, 10, 10, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0}
         Queenval = {-20, -10, -10, -5, -5, -10, -10, -20, -10, 0, 5, 0, 0, 0, 0, -10, -10, 5, 5, 5, 5, 5, 0, -10, 0, 0, 5, 5, 5, 5, 0, -5, -5, 0, 5, 5, 5, 5, 0, -5, -10, 0, 5, 5, 5, 5, 0, -10, -10, 0, 0, 0, 0, 0, 0, -10, -20, -10, -10, -5, -5, -10, -10, -20}
         Kingval = {20, 30, 10, 0, 0, 10, 30, 20, 20, 20, 0, 0, 0, 0, 20, 20, -10, -20, -20, -20, -20, -20, -20, -10, -30, -40, -40, -50, -50, -40, -40, -30, -20, -30, -30, -40, -40, -30, -30, -20, -30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30}
     End Sub
@@ -947,7 +947,9 @@ Public Class Form1
         If (BlackCheck() = True) Then
             MsgBox("Black is in Check!")
         End If
-        WhiteCheck()
+        If (WhiteCheck() = True) Then
+            MsgBox("White is in Check!")
+        End If
     End Sub
 
     'Declares that a player has won the game
@@ -1640,7 +1642,7 @@ Public Class Form1
         End If
 
         MsgBox("White's most used piece was the " & wpieceS & " and they moved it " & wmax & " times.")
-        If (AI = 1) Then
+        If (AI = 0) Then
             MsgBox("Black's most used piece was the " & bpieceS & " and they moved it " & bmax & " times.")
         End If
         Close()
@@ -1922,7 +1924,7 @@ Public Class Form1
     End Function
 
     'Decides if white is in check
-    Public Sub WhiteCheck()
+    Public Function WhiteCheck() As Boolean
         Dim i As Integer
         Dim king As Integer
 
@@ -1935,8 +1937,8 @@ Public Class Form1
         For i = 1 To 7
             If (king + 8 * i < 65) Then
                 If (board(king + 8 * i).ForeColor = Color.Black) And ((board(king + 8 * i).BackgroundImage Is br) Or (board(king + 8 * i).BackgroundImage Is bq)) Then
-                    MsgBox("White is in Check!")
-                    Exit Sub
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king + 8 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -1947,8 +1949,8 @@ Public Class Form1
         For i = 1 To 7
             If (king - 8 * i > 0) Then
                 If (board(king - 8 * i).ForeColor = Color.Black) And ((board(king - 8 * i).BackgroundImage Is br) Or (board(king - 8 * i).BackgroundImage Is bq)) Then
-                    MsgBox("White is in Check!")
-                    Exit Sub
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king - 8 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -1961,8 +1963,8 @@ Public Class Form1
                 Exit For
             End If
             If (board(king - 1 * i).ForeColor = Color.Black) And ((board(king - 1 * i).BackgroundImage Is br) Or (board(king - 1 * i).BackgroundImage Is bq)) Then
-                MsgBox("White is in Check!")
-                Exit Sub
+                Return True
+                Exit Function
             End If
             If Not (board(king - 1 * i).BackgroundImage Is Nothing) Then
                 Exit For
@@ -1974,8 +1976,8 @@ Public Class Form1
                 Exit For
             End If
             If (board(king + 1 * i).ForeColor = Color.Black) And ((board(king + 1 * i).BackgroundImage Is br) Or (board(king + 1 * i).BackgroundImage Is bq)) Then
-                MsgBox("White is in Check!")
-                Exit Sub
+                Return True
+                Exit Function
             End If
             If Not (board(king + 1 * i).BackgroundImage Is Nothing) Then
                 Exit For
@@ -1988,8 +1990,8 @@ Public Class Form1
                     Exit For
                 End If
                 If (board(king - 9 * i).ForeColor = Color.Black) And ((board(king - 9 * i).BackgroundImage Is bb) Or (board(king - 9 * i).BackgroundImage Is bq)) Then
-                    MsgBox("White is in Check")
-                    Exit Sub
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king - 9 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -2003,8 +2005,8 @@ Public Class Form1
                     Exit For
                 End If
                 If (board(king + 9 * i).ForeColor = Color.Black) And ((board(king + 9 * i).BackgroundImage Is bb) Or (board(king + 9 * i).BackgroundImage Is bq)) Then
-                    MsgBox("White is in Check")
-                    Exit Sub
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king + 9 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -2018,8 +2020,8 @@ Public Class Form1
                     Exit For
                 End If
                 If (board(king - 7 * i).ForeColor = Color.Black) And ((board(king - 7 * i).BackgroundImage Is bb) Or (board(king - 7 * i).BackgroundImage Is bq)) Then
-                    MsgBox("White is in Check")
-                    Exit Sub
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king - 7 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -2033,8 +2035,8 @@ Public Class Form1
                     Exit For
                 End If
                 If (board(king + 7 * i).ForeColor = Color.Black) And ((board(king + 7 * i).BackgroundImage Is bb) Or (board(king + 7 * i).BackgroundImage Is bq)) Then
-                    MsgBox("White is in Check")
-                    Exit Sub
+                    Return True
+                    Exit Function
                 End If
                 If Not (board(king + 7 * i).BackgroundImage Is Nothing) Then
                     Exit For
@@ -2044,74 +2046,74 @@ Public Class Form1
 
         If (king - 9 > 0) Then
             If (board(king - 9).BackgroundImage Is bp) Then
-                MsgBox("White is in Check")
-                Exit Sub
+                Return True
+                Exit Function
             End If
         End If
 
         If (king - 7 > 0) Then
             If (board(king - 7).BackgroundImage Is bp) Then
-                MsgBox("White is in Check")
-                Exit Sub
+                Return True
+                Exit Function
             End If
         End If
 
         If (king + 17 < 65) Then
             If (board(king + 17).BackgroundImage Is bn) Then
-                MsgBox("White is in Check")
-                Exit Sub
+                Return True
+                Exit Function
             End If
         End If
 
         If (king - 17 > 0) Then
             If (board(king - 17).BackgroundImage Is bn) Then
-                MsgBox("White is in Check")
-                Exit Sub
+                Return True
+                Exit Function
             End If
         End If
 
         If (king + 15 < 65) Then
             If (board(king + 15).BackgroundImage Is bn) Then
-                MsgBox("White is in Check")
-                Exit Sub
+                Return True
+                Exit Function
             End If
         End If
 
         If (king - 15 > 0) Then
             If (board(king - 15).BackgroundImage Is bn) Then
-                MsgBox("White is in Check")
-                Exit Sub
+                Return True
+                Exit Function
             End If
         End If
 
         If (king + 10 < 65) Then
             If (board(king + 10).BackgroundImage Is bn) Then
-                MsgBox("White is in Check")
-                Exit Sub
+                Return True
+                Exit Function
             End If
         End If
 
         If (king - 10 > 0) Then
             If (board(king - 10).BackgroundImage Is bn) Then
-                MsgBox("White is in Check")
-                Exit Sub
+                Return True
+                Exit Function
             End If
         End If
 
         If (king + 6 < 65) Then
             If (board(king + 6).BackgroundImage Is bn) Then
-                MsgBox("White is in Check")
-                Exit Sub
+                Return True
+                Exit Function
             End If
         End If
 
         If (king - 6 > 0) Then
             If (board(king - 6).BackgroundImage Is bn) Then
-                MsgBox("White is in Check")
-                Exit Sub
+                Return True
+                Exit Function
             End If
         End If
-    End Sub
+    End Function
 
     Dim wkingmove As Boolean = False
     Dim bkingmove As Boolean = False
@@ -2214,8 +2216,11 @@ Public Class Form1
     Dim movetospace As Integer
     Dim spacef As Integer
     Dim movetospacef As Integer
+    Dim whitepieces As Integer
+    Dim testwhitepieces As Integer
     Public Sub AImove()
         boardpos(0) = 52
+        whitepieces = 0
         For counter As Integer = 1 To 64
             If (board(counter).BackgroundImage Is bp) Then
                 boardpos(counter) = 0
@@ -2231,16 +2236,22 @@ Public Class Form1
                 boardpos(counter) = 5
             ElseIf (board(counter).BackgroundImage Is wp) Then
                 boardpos(counter) = 6
+                whitepieces += 1
             ElseIf (board(counter).BackgroundImage Is wr) Then
                 boardpos(counter) = 7
+                whitepieces += 1
             ElseIf (board(counter).BackgroundImage Is wn) Then
                 boardpos(counter) = 8
+                whitepieces += 1
             ElseIf (board(counter).BackgroundImage Is wb) Then
                 boardpos(counter) = 9
+                whitepieces += 1
             ElseIf (board(counter).BackgroundImage Is wq) Then
                 boardpos(counter) = 10
+                whitepieces += 1
             ElseIf (board(counter).BackgroundImage Is wk) Then
                 boardpos(counter) = 11
+                whitepieces += 1
             Else
                 boardpos(counter) = 12
             End If
@@ -2999,24 +3010,39 @@ Public Class Form1
             End If
             If (testboardpos(counter) = 6) Then
                 whitetot += Pawnval(65 - counter - 1)
+                testwhitepieces += 1
             End If
             If (testboardpos(counter) = 7) Then
                 whitetot += Rookval(65 - counter - 1)
+                testwhitepieces += 1
             End If
             If (testboardpos(counter) = 8) Then
                 whitetot += Knightval(65 - counter - 1)
+                testwhitepieces += 1
             End If
             If (testboardpos(counter) = 9) Then
                 whitetot += Bishopval(65 - counter - 1)
+                testwhitepieces += 1
             End If
             If (testboardpos(counter) = 10) Then
                 whitetot += Queenval(65 - counter - 1)
+                testwhitepieces += 1
             End If
             If (testboardpos(counter) = 11) Then
                 whitetot += Kingval(65 - counter - 1)
+                testwhitepieces += 1
             End If
         Next
         eval = blacktot - whitetot
+
+        If (whitepieces <> testwhitepieces) Then
+            eval += 7
+        End If
+
+        If (WhiteCheck() = True) Then
+            eval += 10
+        End If
+
         If (eval > best) Then
             best = eval
             spacef = space
@@ -3036,6 +3062,7 @@ Public Class Form1
         blacktot = 0
         eval = 0
         kings = 0
+        testwhitepieces = 0
         For j As Integer = 1 To 64
             testboardpos(j) = boardpos(j)
         Next j
@@ -3050,7 +3077,9 @@ Public Class Form1
         player = 1
         Label1.Text = firstplayer & "'s Turn"
         best = -10000000
-        WhiteCheck()
+        moves += 1
+        Label3.Text = "Total Moves: " & moves
+        Moved()
         WinKing()
     End Sub
 
