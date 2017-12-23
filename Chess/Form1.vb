@@ -162,6 +162,8 @@ Public Class Form1
 
     'Runs when the Undo Button is clicked
     Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
+        moves -= 1
+        Label3.Text = "Total Moves: " & moves
         If (player = 1) Then
             board(moveMade(1)).BackgroundImage = board(moveMade(0)).BackgroundImage
             board(moveMade(0)).BackgroundImage = pict
@@ -1000,7 +1002,7 @@ Public Class Form1
                         white(0) += 1
                         WhiteMover()
                         PawnQueen()
-                    ElseIf (piece - 16 = num) And (board(piece - 16).BackgroundImage Is Nothing) And (Math.Ceiling(piece / 8) = 7) Then
+                    ElseIf (piece - 16 = num) And (board(piece - 16).BackgroundImage Is Nothing) And (Math.Ceiling(piece / 8) = 7) And (board(piece - 8).BackgroundImage Is Nothing) Then
                         white(0) += 1
                         WhiteMover()
                     End If
@@ -1301,7 +1303,7 @@ Public Class Form1
                         black(0) += 1
                         BlackMover()
                         PawnQueen()
-                    ElseIf (piece + 16 = num) And (board(piece + 16).BackgroundImage Is Nothing) And (Math.Ceiling(piece / 8) = 2) Then
+                    ElseIf (piece + 16 = num) And (board(piece + 16).BackgroundImage Is Nothing) And (Math.Ceiling(piece / 8) = 2) And (board(piece + 8).BackgroundImage Is Nothing) Then
                         black(0) += 1
                         BlackMover()
                     End If
@@ -1696,6 +1698,7 @@ Public Class Form1
         moves += 1
         Label3.Text = "Total Moves: " & moves
         If (AI = 1) Then
+            Button1.Enabled = False
             AImove()
         End If
     End Sub
@@ -2216,11 +2219,20 @@ Public Class Form1
     Dim movetospace As Integer
     Dim spacef As Integer
     Dim movetospacef As Integer
-    Dim whitepieces As Integer
-    Dim testwhitepieces As Integer
+    Dim whitepawn As Integer
+    Dim whiterook As Integer
+    Dim whitemin As Integer
+    Dim whitequeen As Integer
+    Dim testwhitepawn As Integer
+    Dim testwhiterook As Integer
+    Dim testwhitemin As Integer
+    Dim testwhitequeen As Integer
     Public Sub AImove()
         boardpos(0) = 52
-        whitepieces = 0
+        whitepawn = 0
+        whitequeen = 0
+        whitemin = 0
+        whiterook = 0
         For counter As Integer = 1 To 64
             If (board(counter).BackgroundImage Is bp) Then
                 boardpos(counter) = 0
@@ -2236,22 +2248,21 @@ Public Class Form1
                 boardpos(counter) = 5
             ElseIf (board(counter).BackgroundImage Is wp) Then
                 boardpos(counter) = 6
-                whitepieces += 1
+                whitepawn += 1
             ElseIf (board(counter).BackgroundImage Is wr) Then
                 boardpos(counter) = 7
-                whitepieces += 1
+                whiterook += 1
             ElseIf (board(counter).BackgroundImage Is wn) Then
                 boardpos(counter) = 8
-                whitepieces += 1
+                whitemin += 1
             ElseIf (board(counter).BackgroundImage Is wb) Then
                 boardpos(counter) = 9
-                whitepieces += 1
+                whitemin += 1
             ElseIf (board(counter).BackgroundImage Is wq) Then
                 boardpos(counter) = 10
-                whitepieces += 1
+                whitequeen += 1
             ElseIf (board(counter).BackgroundImage Is wk) Then
                 boardpos(counter) = 11
-                whitepieces += 1
             Else
                 boardpos(counter) = 12
             End If
@@ -2321,7 +2332,7 @@ Public Class Form1
         End If
 
         If (space + 16 < 65) Then
-            If (Math.Ceiling((space + 16) / 8) = 4) And (board(space + 16).BackgroundImage Is Nothing) Then
+            If (Math.Ceiling((space + 16) / 8) = 4) And (board(space + 16).BackgroundImage Is Nothing) And (board(space + 8).BackgroundImage Is Nothing) Then
                 testboardpos(space + 16) = 0
                 testboardpos(space) = 12
                 movetospace = space + 16
@@ -3010,44 +3021,61 @@ Public Class Form1
             End If
             If (testboardpos(counter) = 6) Then
                 whitetot += Pawnval(65 - counter - 1)
-                testwhitepieces += 1
+                testwhitepawn += 1
             End If
             If (testboardpos(counter) = 7) Then
                 whitetot += Rookval(65 - counter - 1)
-                testwhitepieces += 1
+                testwhiterook += 1
             End If
             If (testboardpos(counter) = 8) Then
                 whitetot += Knightval(65 - counter - 1)
-                testwhitepieces += 1
+                testwhitemin += 1
             End If
             If (testboardpos(counter) = 9) Then
                 whitetot += Bishopval(65 - counter - 1)
-                testwhitepieces += 1
+                testwhitemin += 1
             End If
             If (testboardpos(counter) = 10) Then
                 whitetot += Queenval(65 - counter - 1)
-                testwhitepieces += 1
+                testwhitequeen += 1
             End If
             If (testboardpos(counter) = 11) Then
                 whitetot += Kingval(65 - counter - 1)
-                testwhitepieces += 1
             End If
         Next
         eval = blacktot - whitetot
 
-        If (whitepieces <> testwhitepieces) Then
-            eval += 7
+        If (whitepawn <> testwhitepawn) Then
+            eval += 11
+        ElseIf (whitemin <> testwhitemin) Then
+            eval += 31
+        ElseIf (whiterook <> testwhiterook) Then
+            eval += 51
+        ElseIf (whitequeen <> testwhitequeen) Then
+            eval += 96
+        End If
+
+        If (AIinDanger() = True) Then
+            If (board(space).BackgroundImage Is bp) Then
+                eval -= 10
+            ElseIf (board(space).BackgroundImage Is bb) Or (board(space).BackgroundImage Is bn) Then
+                eval -= 30
+            ElseIf (board(space).BackgroundImage Is br) Then
+                eval -= 50
+            ElseIf (board(space).BackgroundImage Is bq) Then
+                eval -= 95
+            End If
         End If
 
         If (WhiteCheck() = True) Then
             eval += 10
         End If
-
         If (eval > best) Then
             best = eval
             spacef = space
             movetospacef = movetospace
         End If
+
         For counter As Integer = 1 To 64
             If (testboardpos(counter) = 11) Then
                 kings = 1
@@ -3058,11 +3086,15 @@ Public Class Form1
             spacef = space
             movetospacef = movetospace
         End If
+
         whitetot = 0
         blacktot = 0
         eval = 0
         kings = 0
-        testwhitepieces = 0
+        testwhitepawn = 0
+        testwhitequeen = 0
+        testwhitemin = 0
+        testwhiterook = 0
         For j As Integer = 1 To 64
             testboardpos(j) = boardpos(j)
         Next j
@@ -3076,7 +3108,7 @@ Public Class Form1
         Button1.Enabled = False
         player = 1
         Label1.Text = firstplayer & "'s Turn"
-        best = -10000000
+            best = -10000000
         moves += 1
         Label3.Text = "Total Moves: " & moves
         Moved()
@@ -3119,5 +3151,217 @@ Public Class Form1
             board(space).ForeColor = Color.Black
         End If
         Calculate()
+    End Sub
+
+    Dim picturea As Image
+    Public Function AIinDanger() As Boolean
+        picturea = board(movetospace).BackgroundImage
+        board(movetospace).BackgroundImage = board(space).BackgroundImage
+        board(movetospace).ForeColor = Color.Black
+        board(space).BackgroundImage = Nothing
+        board(space).ForeColor = Nothing
+
+
+
+        For i = 1 To 7
+            If (movetospace + 8 * i < 65) Then
+                If (board(movetospace + 8 * i).ForeColor = Color.White) And ((board(movetospace + 8 * i).BackgroundImage Is wr) Or (board(movetospace + 8 * i).BackgroundImage Is wq)) Then
+                    DangerBack()
+                    Return True
+                End If
+                If Not (board(movetospace + 8 * i).BackgroundImage Is Nothing) Then
+                    Exit For
+                End If
+            End If
+        Next i
+
+        For i = 1 To 7
+            If (movetospace - 8 * i > 0) Then
+                If (board(movetospace - 8 * i).ForeColor = Color.White) And ((board(movetospace - 8 * i).BackgroundImage Is wr) Or (board(movetospace - 8 * i).BackgroundImage Is wq)) Then
+                    DangerBack()
+                    Return True
+                End If
+                If Not (board(movetospace - 8 * i).BackgroundImage Is Nothing) Then
+                    Exit For
+                End If
+            End If
+        Next i
+
+        For i = 1 To 7
+            If ((movetospace - 1 * i) Mod 8 = 0) Then
+                Exit For
+            End If
+            If (board(movetospace - 1 * i).ForeColor = Color.White) And ((board(movetospace - 1 * i).BackgroundImage Is wr) Or (board(movetospace - 1 * i).BackgroundImage Is wq)) Then
+                DangerBack()
+                Return True
+
+            End If
+            If Not (board(movetospace - 1 * i).BackgroundImage Is Nothing) Then
+                Exit For
+            End If
+        Next i
+
+        For i = 1 To 7
+            If ((movetospace + 1 * i) Mod 8 = 1) Then
+                Exit For
+            End If
+            If (board(movetospace + 1 * i).ForeColor = Color.White) And ((board(movetospace + 1 * i).BackgroundImage Is wr) Or (board(movetospace + 1 * i).BackgroundImage Is wq)) Then
+                DangerBack()
+                Return True
+            End If
+            If Not (board(movetospace + 1 * i).BackgroundImage Is Nothing) Then
+                Exit For
+            End If
+        Next i
+
+        For i = 1 To 7
+            If (movetospace - 9 * i > 0) Then
+                If ((movetospace - 9 * i) Mod 8 = 0) Then
+                    Exit For
+                End If
+                If (board(movetospace - 9 * i).ForeColor = Color.White) And ((board(movetospace - 9 * i).BackgroundImage Is wb) Or (board(movetospace - 9 * i).BackgroundImage Is wq)) Then
+                    DangerBack()
+                    Return True
+
+                End If
+                If Not (board(movetospace - 9 * i).BackgroundImage Is Nothing) Then
+                    Exit For
+                End If
+            End If
+        Next i
+
+        For i = 1 To 7
+            If (movetospace + 9 * i < 65) Then
+                If ((movetospace + 9 * i) Mod 8 = 1) Then
+                    Exit For
+                End If
+                If (board(movetospace + 9 * i).ForeColor = Color.White) And ((board(movetospace + 9 * i).BackgroundImage Is wb) Or (board(movetospace + 9 * i).BackgroundImage Is wq)) Then
+                    DangerBack()
+                    Return True
+
+                End If
+                If Not (board(movetospace + 9 * i).BackgroundImage Is Nothing) Then
+                    Exit For
+                End If
+            End If
+        Next i
+
+        For i = 1 To 7
+            If (movetospace - 7 * i > 0) Then
+                If ((movetospace - 7 * i) Mod 8 = 1) Then
+                    Exit For
+                End If
+                If (board(movetospace - 7 * i).ForeColor = Color.White) And ((board(movetospace - 7 * i).BackgroundImage Is wb) Or (board(movetospace - 7 * i).BackgroundImage Is wq)) Then
+                    DangerBack()
+                    Return True
+
+                End If
+                If Not (board(movetospace - 7 * i).BackgroundImage Is Nothing) Then
+                    Exit For
+                End If
+            End If
+        Next i
+
+        For i = 1 To 7
+            If (movetospace + 7 * i < 65) Then
+                If ((movetospace + 7 * i) Mod 8 = 0) Then
+                    Exit For
+                End If
+                If (board(movetospace + 7 * i).ForeColor = Color.White) And ((board(movetospace + 7 * i).BackgroundImage Is wb) Or (board(movetospace + 7 * i).BackgroundImage Is wq)) Then
+                    DangerBack()
+                    Return True
+
+                End If
+                If Not (board(movetospace + 7 * i).BackgroundImage Is Nothing) Then
+                    Exit For
+                End If
+            End If
+        Next i
+
+        If (movetospace + 9 < 65) Then
+            If (board(movetospace + 9).BackgroundImage Is wp) Then
+                DangerBack()
+                Return True
+            End If
+        End If
+
+        If (movetospace + 7 < 65) Then
+            If (board(movetospace + 7).BackgroundImage Is wp) Then
+                DangerBack()
+                Return True
+            End If
+        End If
+
+        If (movetospace + 17 < 65) Then
+            If (board(movetospace + 17).BackgroundImage Is wn) Then
+                DangerBack()
+                Return True
+            End If
+        End If
+
+        If (movetospace - 17 > 0) Then
+            If (board(movetospace - 17).BackgroundImage Is wn) Then
+                DangerBack()
+                Return True
+            End If
+        End If
+
+        If (movetospace + 15 < 65) Then
+            If (board(movetospace + 15).BackgroundImage Is wn) Then
+                DangerBack()
+                Return True
+            End If
+        End If
+
+        If (movetospace - 15 > 0) Then
+            If (board(movetospace - 15).BackgroundImage Is wn) Then
+                DangerBack()
+                Return True
+            End If
+        End If
+
+        If (movetospace + 10 < 65) Then
+            If (board(movetospace + 10).BackgroundImage Is wn) Then
+                DangerBack()
+                Return True
+            End If
+        End If
+
+        If (movetospace - 10 > 0) Then
+            If (board(movetospace - 10).BackgroundImage Is wn) Then
+                DangerBack()
+                Return True
+            End If
+        End If
+
+        If (movetospace + 6 < 65) Then
+            If (board(movetospace + 6).BackgroundImage Is wn) Then
+                DangerBack()
+                Return True
+            End If
+        End If
+
+        If (movetospace - 6 > 0) Then
+            If (board(movetospace - 6).BackgroundImage Is wn) Then
+                DangerBack()
+                Return True
+            End If
+        End If
+        DangerBack()
+    End Function
+
+    Public Sub DangerBack()
+        If (picturea Is Nothing) Then
+            board(space).BackgroundImage = board(movetospace).BackgroundImage
+            board(movetospace).BackgroundImage = Nothing
+            board(movetospace).ForeColor = Nothing
+            board(space).ForeColor = Color.Black
+        End If
+        If Not (picturea Is Nothing) Then
+            board(space).BackgroundImage = board(movetospace).BackgroundImage
+            board(movetospace).BackgroundImage = picturea
+            board(movetospace).ForeColor = Color.White
+            board(space).ForeColor = Color.Black
+        End If
     End Sub
 End Class
