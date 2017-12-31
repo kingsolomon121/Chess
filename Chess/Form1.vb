@@ -149,7 +149,7 @@ Public Class Form1
         Pawnval = {0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 10, -20, -20, 10, 10, 5, 5, -5, -10, 0, 0, -10, -5, 5, 0, 0, 0, 20, 20, 0, 0, 0, 5, 5, 10, 25, 25, 10, 5, 5, 10, 10, 20, 30, 30, 20, 10, 10, 50, 50, 50, 50, 50, 50, 50, 50, 90, 90, 90, 90, 90, 90, 90, 90}
         Knightval = {-50, -40, -30, -30, -30, -30, -40, -50, -40, -20, 0, 5, 5, 0, -20, -40, -30, 5, 10, 15, 15, 10, 5, -30, -30, 0, 15, 20, 20, 15, 0, -30, -30, 5, 15, 20, 20, 15, 5, -30, -30, 0, 10, 15, 15, 10, 0, -30, -40, -20, 0, 0, 0, 0, -20, -40, -50, -40, -30, -30, -30, -30, -40, -50}
         Bishopval = {-20, -10, -10, -10, -10, -10, -10, -20, -10, 0, 0, 0, 0, 0, 0, -10, -10, 0, 5, 10, 10, 5, 0, -10, -10, 5, 5, 10, 10, 5, 5, -10, -10, 0, 10, 10, 10, 10, 0, -10, -10, 10, 10, 10, 10, 10, 10, -10, -10, 5, 0, 0, 0, 0, 5, -10, -20, -10, -10, -10, -10, -10, -10, -20}
-        Rookval = {0, 0, 0, 5, 6, 0, 0, 0, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, 5, 10, 10, 10, 10, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0}
+        Rookval = {0, 0.5, 0, 5, 6, 0, 0.5, 0, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, -5, 5, 10, 10, 10, 10, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0}
         Queenval = {-20, -10, -10, -5, -5, -10, -10, -20, -10, 0, 5, 0, 0, 0, 0, -10, -10, 5, 5, 5, 5, 5, 0, -10, 0, 0, 5, 5, 5, 5, 0, -5, -5, 0, 5, 5, 5, 5, 0, -5, -10, 0, 5, 5, 5, 5, 0, -10, -10, 0, 0, 0, 0, 0, 0, -10, -20, -10, -10, -5, -5, -10, -10, -20}
         Kingval = {20, 30, 10, 0, 0, 10, 30, 20, 20, 20, 0, 0, 0, 0, 20, 20, -10, -20, -20, -20, -20, -20, -20, -10, -30, -40, -40, -50, -50, -40, -40, -30, -20, -30, -30, -40, -40, -30, -30, -20, -30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30}
     End Sub
@@ -944,8 +944,9 @@ Public Class Form1
     Public Sub Moved()
         moveMade(0) = num
         moveMade(1) = piece
-        Button1.Enabled = True
-
+        If Not (AI = 1) Then
+            Button1.Enabled = True
+        End If
         If (BlackCheck() = True) Then
             MsgBox("Black is in Check!")
         End If
@@ -3064,11 +3065,13 @@ Public Class Form1
                 eval -= 50
             ElseIf (board(space).BackgroundImage Is bq) Then
                 eval -= 95
+            ElseIf (board(space).BackgroundImage Is bk) Then
+                eval -= 100000
             End If
         End If
 
         If (WhiteCheck() = True) Then
-            eval += 10
+            eval += 12
         End If
         If (eval > best) Then
             best = eval
@@ -3105,13 +3108,30 @@ Public Class Form1
         board(spacef).BackgroundImage = Nothing
         board(spacef).ForeColor = Nothing
         board(movetospacef).ForeColor = Color.Black
+        '  If (BlackCheck() = True) Then
+        ' If (picturea Is Nothing) Then
+        'board(space).BackgroundImage = board(movetospace).BackgroundImage
+        'board(movetospace).BackgroundImage = Nothing
+        'board(movetospace).ForeColor = Nothing
+        'board(space).ForeColor = Color.Black
+        'End If
+        'If Not (picturea Is Nothing) Then
+        'board(space).BackgroundImage = board(movetospace).BackgroundImage
+        'board(movetospace).BackgroundImage = picturea
+        'board(movetospace).ForeColor = Color.White
+        'board(space).ForeColor = Color.Black
+        'End If
+        'AImove()
+        'Exit Sub
+        'End If
         Button1.Enabled = False
         player = 1
         Label1.Text = firstplayer & "'s Turn"
-            best = -10000000
+        best = -10000000
         moves += 1
         Label3.Text = "Total Moves: " & moves
         Moved()
+        PawnQueen()
         WinKing()
     End Sub
 
